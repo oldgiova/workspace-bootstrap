@@ -24,5 +24,7 @@ This ansible script:
 * Configures asdf plugins
 * Installs oh-my-zsh
 * Configures oh-my-zsh
+* Installs Docker
+* Installs AWS VPN Client
 
 You then need to configure your Oh My Zsh manually
