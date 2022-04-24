@@ -1,0 +1,28 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  
+
+  tasks:
+    - name: Add Docker signing key
+      ansible.builtin.shell: wget -q -O - https://d20adtppz83p9s.cloudfront.net/GTK/latest/debian-repo/awsvpnclient_public_key.asc | sudo apt-key add -
+      # when: docker_signing_key_installed.stat.exists == False
+      
+    - name: Add specified repository into sources list
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://d20adtppz83p9s.cloudfront.net/GTK/latest/debian-repo ubuntu-20.04 main
+        state: present
+
+    - name: Install AWS VPN Client Packages
+      apt:
+        pkg:
+          - awsvpnclient
+        state: latest
+        update_cache: yes
+
+    
