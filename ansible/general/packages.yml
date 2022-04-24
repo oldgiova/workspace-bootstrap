@@ -33,6 +33,8 @@
           - gnupg
           - lsb-release
           - postgresql-client
+          - network-manager-openvpn
+          - network-manager-openvpn-gnome
         state: latest
         update_cache: yes
     - name: Install snap packages
