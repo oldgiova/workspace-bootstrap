@@ -1,0 +1,59 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars_prompt:
+    - name: "my_password"
+      prompt: "Enter password"
+      private: yes
+
+  tasks:
+    - name: Check if Oh My ZSH is installed
+      stat:
+        path: ~/.oh-my-zsh
+      register: installed
+      ignore_errors: true
+
+    - name: Install Oh My ZSH
+      ansible.builtin.git:
+        repo: https://github.com/ohmyzsh/ohmyzsh.git
+        dest: "~/.oh-my-zsh"
+      when: not installed.stat.exists
+    
+    - name: Install Oh My ZSH - zshrc
+      ansible.builtin.copy:
+        src: ~/.oh-my-zsh/templates/zshrc.zsh-template
+        dest: ~/.zshrc
+        backup: yes
+      when: not installed.stat.exists
+
+    - name: Change default shell
+      expect:
+        command: "chsh -s /usr/bin/zsh"
+        responses:
+          (?i)password: "{{ my_password }}"
+        creates: ".shell_is_zsh"
+      when: not installed.stat.exists
+
+    - name: Check if zsh-autosuggestion is installed
+      stat:
+        path: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+      register: zsh_autosuggestion_installed
+      ignore_errors: true
+    
+    - name: Install zsh-autosuggestion plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+      when: not zsh_autosuggestion_installed.stat.exists
+
+    - name: Check if zsh-syntax-highlighting is installed
+      stat:
+        path: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+      register: zsh_syntax_highlighting_installed
+      ignore_errors: true
+
+    - name: Install zsh-syntax-highlighting
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+      when: not zsh_syntax_highlighting_installed.stat.exists
+      
