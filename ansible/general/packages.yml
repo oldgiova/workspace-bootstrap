@@ -35,6 +35,8 @@
           - postgresql-client
           - network-manager-openvpn
           - network-manager-openvpn-gnome
+          - xclip
+          - git-crypt
         state: latest
         update_cache: yes
     - name: Install snap packages
