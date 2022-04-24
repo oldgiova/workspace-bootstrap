@@ -37,6 +37,8 @@
           - network-manager-openvpn-gnome
           - xclip
           - git-crypt
+          - graphicsmagick 
+          - csvkit
         state: latest
         update_cache: yes
     - name: Install snap packages
@@ -48,4 +50,5 @@
           - code
           - dbeaver-ce
           - flameshot
+          - spotify
         classic: yes
