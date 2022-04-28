@@ -39,6 +39,7 @@
           - git-crypt
           - graphicsmagick 
           - csvkit
+          - cifs-utils
         state: latest
         update_cache: yes
     - name: Install snap packages
