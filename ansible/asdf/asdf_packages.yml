@@ -11,7 +11,10 @@
     bundler_version: "2.2.4"
     gcloud_version: "378.0.0"
     golang_version: "1.16"
-    java_version: "adoptopenjdk-11.0.14+101"
+    java_version: 
+      - "adoptopenjdk-11.0.14+101"
+      - "adoptopenjdk-17.0.3+7"
+    default_java_version: "adoptopenjdk-17.0.3+7"
     kind_version: "latest"
     maven_version: "3.5.3"
     mongosh_version: "1.2.1"
@@ -194,8 +197,12 @@
       when: asdf_list_java.rc != 0
     - name: Set java version
       shell: |
-        asdf install java {{ java_version }} \
-             && asdf global java {{ java_version }}
+        asdf install java {{ item }}
+      loop: "{{ java_version }}" 
+      when: asdf_installed.stat.exists
+    - name: Set java default version
+      shell: |
+        asdf global java {{ default_java_version }}
       when: asdf_installed.stat.exists
 
     ## kind
