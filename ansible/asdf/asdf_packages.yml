@@ -24,6 +24,7 @@
     terraform_version: "1.1.7"
     terragrunt_version: "0.36.3"
     yarn_version: "1.16.0"
+    dive_version: "latest"
 
 
   tasks:
@@ -315,4 +316,18 @@
       shell: |
         asdf install yarn {{ yarn_version }} \
              && asdf global yarn {{ yarn_version }}
+      when: asdf_installed.stat.exists
+    
+    ## dive
+    - name: check if dive is installed
+      shell: asdf plugin-list | grep dive
+      register: asdf_list_dive
+      ignore_errors: true
+    - name: Install dive
+      shell: asdf plugin-add dive
+      when: asdf_list_dive != 0
+    - name: Set dive version
+      shell: |
+        asdf install dive {{ dive_version }} \
+             && asdf global dive {{ dive_version }}
       when: asdf_installed.stat.exists
