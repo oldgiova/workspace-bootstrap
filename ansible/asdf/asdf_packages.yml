@@ -25,6 +25,7 @@
     terragrunt_version: "0.36.3"
     yarn_version: "1.16.0"
     dive_version: "latest"
+    kubeval_version: "latest"
 
 
   tasks:
@@ -325,9 +326,23 @@
       ignore_errors: true
     - name: Install dive
       shell: asdf plugin-add dive
-      when: asdf_list_dive != 0
+      when: asdf_list_dive.rc != 0
     - name: Set dive version
       shell: |
         asdf install dive {{ dive_version }} \
              && asdf global dive {{ dive_version }}
+      when: asdf_installed.stat.exists
+
+    ## kubeval
+    - name: check if kubeval is installed
+      shell: asdf plugin-list | grep kubeval
+      register: asdf_list_kubeval
+      ignore_errors: true
+    - name: Install kubeval
+      shell: asdf plugin-add kubeval
+      when: asdf_list_kubeval.rc != 0
+    - name: Set kubeval version
+      shell: |
+        asdf install kubeval {{ kubeval_version }} \
+             && asdf global kubeval {{ kubeval_version }}
       when: asdf_installed.stat.exists
