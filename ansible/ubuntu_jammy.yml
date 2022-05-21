@@ -5,14 +5,14 @@
 - name: Importing git repos playbook
   import_playbook: general/packages.yml
 
+- name: Oh My ZSH Setup
+  import_playbook: oh-my-zsh/ubuntu_jammy.yml
+
 - name: ASDF Setup
   import_playbook: asdf/ubuntu_jammy.yml
 
 - name: ASDF
   import_playbook: asdf/asdf_packages.yml
-
-- name: Oh My ZSH Setup
-  import_playbook: oh-my-zsh/ubuntu_jammy.yml
 
 - name: Docker Setup
   import_playbook: docker/ubuntu_jammy.yml
