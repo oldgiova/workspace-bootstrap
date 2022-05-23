@@ -42,6 +42,8 @@
           - cifs-utils
           - pwgen
           - jq
+          - pass
+          - webext-browserpass
         state: latest
         update_cache: yes
     - name: Install snap packages
