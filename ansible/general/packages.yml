@@ -45,6 +45,8 @@
           - pass
           - webext-browserpass
           - libffi-dev
+          - bzip2
+          - libreadline-dev
         state: latest
         update_cache: yes
     - name: Install snap packages

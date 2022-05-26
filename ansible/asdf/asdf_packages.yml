@@ -24,8 +24,8 @@
     nodejs_version: "14.16.1"
     python_version: 
       - "3.8.2"
-      - "3.7.2"
-    default_python_version: "3.7.2"
+      - "3.7.13"
+    default_python_version: "3.7.13"
     #ruby_version: "2.6.6"
     terraform_version: "1.1.7"
     terragrunt_version: "0.36.3"
