@@ -17,5 +17,5 @@
 - name: Docker Setup
   import_playbook: docker/ubuntu_jammy.yml
 
-- name: AWS VPN Client Setup
-  import_playbook: aws-vpn-client/ubuntu_jammy.yml
+    #- name: AWS VPN Client Setup
+    #  import_playbook: aws-vpn-client/ubuntu_jammy.yml

@@ -32,6 +32,7 @@
     yarn_version: "1.16.0"
     dive_version: "latest"
     kubeval_version: "latest"
+    azurecli_version: "latest"
 
 
   tasks:
@@ -359,4 +360,18 @@
       shell: |
         asdf install kubeval {{ kubeval_version }} \
              && asdf global kubeval {{ kubeval_version }}
+      when: asdf_installed.stat.exists
+
+     ## azure-cli
+    - name: check if azure-cli is installed
+      shell: asdf plugin-list | grep azure-cli
+      register: asdf_list_azurecli
+      ignore_errors: true
+    - name: Install azure-cli
+      shell: asdf plugin-add azure-cli
+      when: asdf_list_azurecli.rc != 0
+    - name: Set azure-cli version
+      shell: |
+        asdf install azure-cli {{ azurecli_version }} \
+             && asdf global azure-cli {{ azurecli_version }}
       when: asdf_installed.stat.exists
