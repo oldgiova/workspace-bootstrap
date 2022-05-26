@@ -1,7 +1,10 @@
 - hosts: 127.0.0.1
   connection: local
   vars:
-    kubectl_version: "1.20.5"
+    kubectl_version: 
+      - "1.20.5"
+      - "1.21.9"
+    default_kubectl_version: "1.21.9"
     helm_version: "3.6.3"
     stern_version: "1.20.1"
     kubectx_version: "0.9.4"
@@ -19,7 +22,10 @@
     maven_version: "3.5.3"
     mongosh_version: "1.2.1"
     nodejs_version: "14.16.1"
-    python_version: "3.8.2"
+    python_version: 
+      - "3.8.2"
+      - "3.7.2"
+    default_python_version: "3.7.2"
     #ruby_version: "2.6.6"
     terraform_version: "1.1.7"
     terragrunt_version: "0.36.3"
@@ -45,8 +51,12 @@
       when: asdf_list_python.rc != 0
     - name: Set python version
       shell: |
-        asdf install python {{ python_version }} \
-             && asdf global python {{ python_version }}
+        asdf install python {{ item }}
+      loop: "{{ python_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set python default version
+      shell: |
+        asdf global python {{ default_python_version }}
       when: asdf_installed.stat.exists
       
     ## kubectl  
@@ -59,8 +69,12 @@
       when: asdf_list_kubectl.rc != 0
     - name: Set kubectl version
       shell: |
-        asdf install kubectl {{ kubectl_version }} \
-             && asdf global kubectl {{ kubectl_version }}
+        asdf install kubectl {{ item }}
+      loop: "{{ kubectl_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set kubectl default version
+      shell: |
+        asdf global kubectl {{ default_kubectl_version }}
       when: asdf_installed.stat.exists
     
     ## kubectx
