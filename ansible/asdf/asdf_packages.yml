@@ -27,8 +27,14 @@
       - "3.7.13"
     default_python_version: "3.7.13"
     #ruby_version: "2.6.6"
-    terraform_version: "1.1.7"
-    terragrunt_version: "0.36.3"
+    terraform_version: 
+      - "1.1.7"
+      - "0.15.5"
+    default_terraform_version: "1.1.7"
+    terragrunt_version: 
+      - "0.36.3"
+      - "0.29.7"
+    default_terragrunt_version: "0.36.3"
     yarn_version: "1.16.0"
     dive_version: "latest"
     kubeval_version: "latest"
@@ -302,8 +308,12 @@
       when: asdf_list_terraform.rc != 0
     - name: Set terraform version
       shell: |
-        asdf install terraform {{ terraform_version }} \
-             && asdf global terraform {{ terraform_version }}
+        asdf install terraform {{ item }}
+      loop: "{{ terraform_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set terraform default version
+      shell: |
+        asdf global terraform {{ default_terraform_version }}
       when: asdf_installed.stat.exists
 
     ## terragrunt
@@ -316,8 +326,12 @@
       when: asdf_list_terragrunt.rc != 0
     - name: Set terragrunt version
       shell: |
-        asdf install terragrunt {{ terragrunt_version }} \
-             && asdf global terragrunt {{ terragrunt_version }}
+        asdf install terragrunt {{ item }}
+      when: asdf_installed.stat.exists
+      loop: "{{ terragrunt_version }}"
+    - name: Set terragrunt default version
+      shell: |
+        asdf global terragrunt {{ default_terragrunt_version }}
       when: asdf_installed.stat.exists
 
     ## yarn
