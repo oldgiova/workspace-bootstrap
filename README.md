@@ -14,6 +14,15 @@ Then simply run:
 ```
 make run
 ```
+After first run it fails for `asdf` installation.
+Change following to your `~/.zshrc`:
+```
+plugins=(git asdf zsh-autosuggestions zsh-syntax-highlighting)
+```
+then logout, login and run again:
+```
+make run
+```
 
 # Functionalities 
 This ansible script:
