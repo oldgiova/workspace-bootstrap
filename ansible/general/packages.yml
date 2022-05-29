@@ -47,6 +47,7 @@
           - libffi-dev
           - bzip2
           - libreadline-dev
+          - virtualbox
         state: latest
         update_cache: yes
     - name: Install snap packages
