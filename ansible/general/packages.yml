@@ -48,6 +48,7 @@
           - bzip2
           - libreadline-dev
           - virtualbox
+          - chrome-gnome-shell
         state: latest
         update_cache: yes
     - name: Install snap packages
