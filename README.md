@@ -23,6 +23,10 @@ then logout, login and run again:
 ```
 make run
 ```
+**note:** for getting `gcloud` package to build, run:
+```
+CLOUDSDK_PYTHON=/usr/bin/python3 make run
+```
 
 # Functionalities 
 This ansible script:
