@@ -49,7 +49,6 @@
           - libreadline-dev
           - virtualbox
           - chrome-gnome-shell
-          - i3
         state: latest
         update_cache: yes
     - name: Install snap packages

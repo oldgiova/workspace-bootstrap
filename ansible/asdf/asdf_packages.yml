@@ -39,6 +39,7 @@
     dive_version: "latest"
     kubeval_version: "latest"
     azurecli_version: "latest"
+    krew_version: "latest"
 
 
   tasks:
@@ -389,3 +390,18 @@
         asdf install azure-cli {{ azurecli_version }} \
              && asdf global azure-cli {{ azurecli_version }}
       when: asdf_installed.stat.exists
+        
+     ## krew
+    - name: check if krew is installed
+      shell: asdf plugin-list | grep krew
+      register: asdf_list_krew
+      ignore_errors: true
+    - name: Install krew
+      shell: asdf plugin-add krew
+      when: asdf_list_krew.rc != 0
+    - name: Set krew version
+      shell: |
+        asdf install krew {{ krew_version }} \
+             && asdf global krew {{ krew_version }}
+      when: asdf_installed.stat.exists
+
