@@ -49,6 +49,8 @@
           - libreadline-dev
           - virtualbox
           - chrome-gnome-shell
+          - gnome-shell-extensions
+          - gnome-shell-extension-manager
         state: latest
         update_cache: yes
     - name: Install snap packages
