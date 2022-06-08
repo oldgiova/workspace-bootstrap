@@ -1,0 +1,38 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  tasks:
+    - name: Check if Powershell is installed
+      command: dpkg-query -W packages-microsoft-prod
+      register: powershell_check_deb
+      failed_when: powershell_check_deb.rc > 1
+      changed_when: powershell_check_deb.rc == 1
+
+    - name: Download Powershell
+      get_url:
+        url=https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
+        dest="/tmp/packages-microsoft-prod.deb"
+      become: false
+      when: powershell_check_deb.rc == 1
+
+    - name: Install Powershell reoo
+      apt: deb="/tmp/packages-microsoft-prod.deb"
+      become: true
+      when: powershell_check_deb.rc == 1
+    
+    - name: Remove old package file
+      file: 
+        path: "/tmp/packages-microsoft-prod.deb"
+        state: absent
+
+    - name: Install Powershell packages
+      apt:
+        pkg:
+          - powershell
+        state: latest
+        update_cache: yes
