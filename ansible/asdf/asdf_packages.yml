@@ -4,6 +4,7 @@
     kubectl_version: 
       - "1.20.5"
       - "1.21.9"
+      - "1.22.8"
     default_kubectl_version: "1.21.9"
     helm_version: "3.6.3"
     stern_version: "1.20.1"
