@@ -51,6 +51,8 @@
           - chrome-gnome-shell
           - gnome-shell-extensions
           - gnome-shell-extension-manager
+          - fzf
+          - ripgrep
         state: latest
         update_cache: yes
     - name: Install snap packages
