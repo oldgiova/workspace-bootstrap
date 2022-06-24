@@ -6,7 +6,10 @@
       - "1.21.9"
       - "1.22.8"
     default_kubectl_version: "1.21.9"
-    helm_version: "3.6.3"
+    helm_version: 
+      - "3.6.3"
+      - "3.9.0"
+    default_helm_version: "3.6.3"
     stern_version: "1.20.1"
     kubectx_version: "0.9.4"
     eksctl_version: "0.67.0"
@@ -139,8 +142,12 @@
       when: asdf_list_helm.rc != 0
     - name: Set helm version
       shell: |
-        asdf install helm {{ helm_version }} \
-             && asdf global helm {{ helm_version }}
+        asdf install helm {{ item }}
+      loop: "{{ helm_version  }}"
+      when: asdf_installed.stat.exists
+    - name: Set helm default version
+      shell: |
+        asdf global helm {{ default_helm_version }}
       when: asdf_installed.stat.exists
    
     ## flux
