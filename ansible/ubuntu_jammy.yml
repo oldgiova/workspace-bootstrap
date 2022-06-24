@@ -20,5 +20,8 @@
 - name: Powershell Setup
   import_playbook: powershell/ubuntu_jammy.yml
 
+- name: VIM Setup
+  import_playbook: vim/ubuntu_jammy.yml
+
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_jammy.yml

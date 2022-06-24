@@ -1,0 +1,15 @@
+- hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Check if vimplug is installed
+      stat:
+        path: ~/.vim/autoload/plug.vim
+      register: installed
+      ignore_errors: true
+
+    - name: Install vim plug
+      ansible.builtin.shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      when: not installed.stat.exists
+
+ 
