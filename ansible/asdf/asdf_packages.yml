@@ -45,6 +45,7 @@
     kubeval_version: "latest"
     azurecli_version: "latest"
     krew_version: "latest"
+    k2tf_version: "latest"
 
 
   tasks:
@@ -413,4 +414,19 @@
         asdf install krew {{ krew_version }} \
              && asdf global krew {{ krew_version }}
       when: asdf_installed.stat.exists
+        
+     ## k2tf
+    - name: check if k2tf is installed
+      shell: asdf plugin-list | grep k2tf
+      register: asdf_list_k2tf
+      ignore_errors: true
+    - name: Install k2tf
+      shell: asdf plugin-add k2tf
+      when: asdf_list_k2tf.rc != 0
+    - name: Set k2tf version
+      shell: |
+        asdf install k2tf {{ k2tf_version }} \
+             && asdf global k2tf {{ k2tf_version }}
+      when: asdf_installed.stat.exists
+
 
