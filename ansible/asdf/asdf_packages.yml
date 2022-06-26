@@ -46,6 +46,7 @@
     azurecli_version: "latest"
     krew_version: "latest"
     k2tf_version: "latest"
+    cmctl_version: "latest"
 
 
   tasks:
@@ -427,6 +428,20 @@
       shell: |
         asdf install k2tf {{ k2tf_version }} \
              && asdf global k2tf {{ k2tf_version }}
+      when: asdf_installed.stat.exists
+
+     ## cmctl
+    - name: check if cmctl is installed
+      shell: asdf plugin-list | grep cmctl
+      register: asdf_list_cmctl
+      ignore_errors: true
+    - name: Install cmctl
+      shell: asdf plugin-add cmctl
+      when: asdf_list_cmctl.rc != 0
+    - name: Set cmctl version
+      shell: |
+        asdf install cmctl {{ cmctl_version }} \
+             && asdf global cmctl {{ cmctl_version }}
       when: asdf_installed.stat.exists
 
 
