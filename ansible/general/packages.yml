@@ -53,6 +53,7 @@
           - gnome-shell-extension-manager
           - fzf
           - ripgrep
+          - dconf-cli
         state: latest
         update_cache: yes
     - name: Install snap packages

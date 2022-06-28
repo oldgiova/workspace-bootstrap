@@ -25,14 +25,6 @@
         backup: yes
       when: not installed.stat.exists
 
-    - name: Change default shell
-      expect:
-        command: "chsh -s /usr/bin/zsh"
-        responses:
-          (?i)password: "{{ my_password }}"
-        creates: ".shell_is_zsh"
-      when: not installed.stat.exists
-
     - name: Check if zsh-autosuggestion is installed
       stat:
         path: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
@@ -50,10 +42,46 @@
         path: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
       register: zsh_syntax_highlighting_installed
       ignore_errors: true
-
     - name: Install zsh-syntax-highlighting
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
         dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
       when: not zsh_syntax_highlighting_installed.stat.exists
       
+    - name: Check if oh my zsh dracula theme is installed
+      stat:
+        path: "~/.oh-my-zsh/themes/dracula-source/dracula.zsh-theme"
+      register: zsh_draculatheme_installed
+      ignore_errors: true
+    - name: Clone dracula theme repo
+      ansible.builtin.git:
+        repo: https://github.com/dracula/zsh.git
+        dest: "~/.oh-my-zsh/themes/dracula-source"
+      when: not zsh_draculatheme_installed.stat.exists
+    - name: Install dracula theme
+      ansible.builtin.file:
+        src: "~/.oh-my-zsh/themes/dracula-source/dracula.zsh-theme"
+        dest: "~/.oh-my-zsh/themes/dracula.zsh-theme"
+        state: link
+      when: not zsh_draculatheme_installed.stat.exists
+      
+    - name: Check if terminal dracula theme is installed
+      stat:
+        path: "~/src/github/dracula/gnome-terminal"
+      register: zsh_draculathemeterminal_installed
+      ignore_errors: true
+    - name: Clone dracula theme repo
+      ansible.builtin.git:
+        repo: https://github.com/dracula/gnome-terminal.git
+        dest: "~/src/github/dracula/gnome-terminal"
+      when: not zsh_draculathemeterminal_installed.stat.exists
+
+    - name: Change default shell
+      expect:
+        command: "chsh -s /usr/bin/zsh"
+        responses:
+          (?i)password: "{{ my_password }}"
+        creates: ".shell_is_zsh"
+      become: yes
+      when: not installed.stat.exists
+
