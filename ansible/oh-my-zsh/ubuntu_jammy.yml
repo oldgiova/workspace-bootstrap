@@ -76,6 +76,17 @@
         dest: "~/src/github/dracula/gnome-terminal"
       when: not zsh_draculathemeterminal_installed.stat.exists
 
+    - name: Check if vscode dracula theme is installed
+      stat:
+        path: "~/.vscode/extensions/theme-dracula"
+      register: zsh_draculathemevscode_installed
+      ignore_errors: true
+    - name: Clone dracula theme repo
+      ansible.builtin.git:
+        repo: https://github.com/dracula/visual-studio-code.git
+        dest: "~/.vscode/extensions/theme-dracula"
+      when: not zsh_draculathemevscode_installed.stat.exists
+      
     - name: Change default shell
       expect:
         command: "chsh -s /usr/bin/zsh"
