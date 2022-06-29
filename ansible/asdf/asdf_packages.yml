@@ -47,6 +47,7 @@
     krew_version: "latest"
     k2tf_version: "latest"
     cmctl_version: "latest"
+    yq_version: "latest"
 
 
   tasks:
@@ -443,5 +444,20 @@
         asdf install cmctl {{ cmctl_version }} \
              && asdf global cmctl {{ cmctl_version }}
       when: asdf_installed.stat.exists
+
+     ## yq
+    - name: check if yq is installed
+      shell: asdf plugin-list | grep yq
+      register: asdf_list_yq
+      ignore_errors: true
+    - name: Install yq
+      shell: asdf plugin-add yq
+      when: asdf_list_yq.rc != 0
+    - name: Set yq version
+      shell: |
+        asdf install yq {{ yq_version }} \
+             && asdf global yq {{ yq_version }}
+      when: asdf_installed.stat.exists
+
 
 
