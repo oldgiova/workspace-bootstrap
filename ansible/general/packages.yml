@@ -54,6 +54,8 @@
           - fzf
           - ripgrep
           - dconf-cli
+          - docker-compose
+          - rpi-imager
         state: latest
         update_cache: yes
     - name: Install snap packages
