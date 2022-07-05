@@ -23,5 +23,8 @@
 - name: VIM Setup
   import_playbook: vim/ubuntu_jammy.yml
 
+- name: Krew Plugin install
+  import_playbook: krew/ubuntu_jammy.yml
+
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_jammy.yml

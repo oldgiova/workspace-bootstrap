@@ -433,7 +433,7 @@
              && asdf global k2tf {{ k2tf_version }}
       when: asdf_installed.stat.exists
 
-     ## cmctl
+    ## cmctl
     - name: check if cmctl is installed
       shell: asdf plugin-list | grep cmctl
       register: asdf_list_cmctl
@@ -447,7 +447,7 @@
              && asdf global cmctl {{ cmctl_version }}
       when: asdf_installed.stat.exists
 
-     ## yq
+    ## yq
     - name: check if yq is installed
       shell: asdf plugin-list | grep yq
       register: asdf_list_yq
@@ -478,5 +478,4 @@
       shell: |
         asdf global minio {{ default_minio_version }}
       when: asdf_installed.stat.exists
-
 
