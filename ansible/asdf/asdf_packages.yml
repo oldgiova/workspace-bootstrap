@@ -51,6 +51,7 @@
     minio_version: 
       - "latest"
     default_minio_version: "latest"
+    kubeconform_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -478,4 +479,19 @@
       shell: |
         asdf global minio {{ default_minio_version }}
       when: asdf_installed.stat.exists
+
+    ## kubeconform
+    - name: check if kubeconform is installed
+      shell: asdf plugin-list | grep kubeconform
+      register: asdf_list_kubeconform
+      ignore_errors: true
+    - name: Install kubeconform
+      shell: asdf plugin-add kubeconform
+      when: asdf_list_kubeconform.rc != 0
+    - name: Set kubeconform version
+      shell: |
+        asdf install kubeconform {{ kubeconform_version }} \
+             && asdf global kubeconform {{ kubeconform_version }}
+      when: asdf_installed.stat.exists
+
 
