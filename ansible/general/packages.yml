@@ -56,6 +56,7 @@
           - dconf-cli
           - docker-compose
           - rpi-imager
+          - nethogs
         state: latest
         update_cache: yes
     - name: Install snap packages
