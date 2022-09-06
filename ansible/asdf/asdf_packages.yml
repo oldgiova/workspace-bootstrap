@@ -5,6 +5,7 @@
       - "1.20.5"
       - "1.21.9"
       - "1.22.8"
+      - "1.22.10"
     default_kubectl_version: "1.21.9"
     helm_version: 
       - "3.6.3"
@@ -46,7 +47,7 @@
     azurecli_version: "latest"
     krew_version: "latest"
     k2tf_version: "latest"
-    cmctl_version: "latest"
+    cmctl_version: "1.8.2"
     yq_version: "latest"
     minio_version: 
       - "latest"

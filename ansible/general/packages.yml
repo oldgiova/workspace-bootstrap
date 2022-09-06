@@ -57,6 +57,7 @@
           - docker-compose
           - rpi-imager
           - nethogs
+          - flameshot
         state: latest
         update_cache: yes
     - name: Install snap packages
@@ -67,7 +68,6 @@
           - authy
           - code
           - dbeaver-ce
-          - flameshot
           - spotify
           - opera
           - vlc
