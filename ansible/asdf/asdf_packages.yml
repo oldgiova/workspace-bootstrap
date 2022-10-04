@@ -6,7 +6,7 @@
       - "1.21.9"
       - "1.22.8"
       - "1.22.10"
-    default_kubectl_version: "1.21.9"
+    default_kubectl_version: "1.22.10"
     helm_version: 
       - "3.6.3"
       - "3.9.0"
