@@ -53,6 +53,7 @@
       - "latest"
     default_minio_version: "latest"
     kubeconform_version: "latest"
+    github_cli_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -493,6 +494,20 @@
       shell: |
         asdf install kubeconform {{ kubeconform_version }} \
              && asdf global kubeconform {{ kubeconform_version }}
+      when: asdf_installed.stat.exists
+
+    ## github-cli
+    - name: check if github-cli is installed
+      shell: asdf plugin-list | grep github-cli
+      register: asdf_list_github-cli
+      ignore_errors: true
+    - name: Install github-cli
+      shell: asdf plugin-add github-cli
+      when: asdf_list_github-cli.rc != 0
+    - name: Set github-cli version
+      shell: |
+        asdf install github-cli {{ github_cli_version }} \
+             && asdf global github-cli {{ github_cli_version }}
       when: asdf_installed.stat.exists
 
 
