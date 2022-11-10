@@ -499,11 +499,11 @@
     ## github-cli
     - name: check if github-cli is installed
       shell: asdf plugin-list | grep github-cli
-      register: asdf_list_github-cli
+      register: asdf_list_github_cli
       ignore_errors: true
     - name: Install github-cli
       shell: asdf plugin-add github-cli
-      when: asdf_list_github-cli.rc != 0
+      when: asdf_list_github_cli.rc != 0
     - name: Set github-cli version
       shell: |
         asdf install github-cli {{ github_cli_version }} \

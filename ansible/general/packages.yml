@@ -58,6 +58,7 @@
           - rpi-imager
           - nethogs
           - flameshot
+          - apache2-utils
         state: latest
         update_cache: yes
     - name: Install snap packages
