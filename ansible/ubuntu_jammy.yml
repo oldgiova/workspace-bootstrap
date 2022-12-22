@@ -26,5 +26,8 @@
 - name: Krew Plugin install
   import_playbook: krew/ubuntu_jammy.yml
 
+- name: Atlas cli install
+  import_playbook: atlas-cli/ubuntu_jammy.yml
+
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_jammy.yml
