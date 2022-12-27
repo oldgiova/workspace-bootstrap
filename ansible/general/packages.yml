@@ -59,6 +59,7 @@
           - nethogs
           - flameshot
           - apache2-utils
+          - wireshark-qt
         state: latest
         update_cache: yes
     - name: Install snap packages
