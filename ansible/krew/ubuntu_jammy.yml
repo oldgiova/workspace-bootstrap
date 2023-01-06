@@ -2,7 +2,9 @@
   connection: local
   vars:
     krew_plugins:
-      - "minio"
+      - "cert-manager"
+      - "popeye"
+      - "explore"
 
   tasks:
     - name: Check if kubectl is installed
