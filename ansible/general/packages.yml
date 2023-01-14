@@ -61,6 +61,7 @@
           - apache2-utils
           - wireshark-qt
           - whois
+          - cloud-init
         state: latest
         update_cache: yes
     - name: Install snap packages
