@@ -55,6 +55,7 @@
     default_minio_version: "latest"
     kubeconform_version: "latest"
     github_cli_version: "latest"
+    crane_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -511,4 +512,17 @@
              && asdf global github-cli {{ github_cli_version }}
       when: asdf_installed.stat.exists
 
+    ## crane
+    - name: check if crane is installed
+      shell: asdf plugin-list | grep crane
+      register: asdf_list_crane
+      ignore_errors: true
+    - name: Install crane
+      shell: asdf plugin-add crane
+      when: asdf_list_crane.rc != 0
+    - name: Set crane version
+      shell: |
+        asdf install crane {{ crane_version }} \
+             && asdf global crane {{ crane_version }}
+      when: asdf_installed.stat.exists
 
