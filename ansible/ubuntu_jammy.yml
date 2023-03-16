@@ -29,5 +29,8 @@
 - name: Atlas cli install
   import_playbook: atlas-cli/ubuntu_jammy.yml
 
+- name: amazon-ec2-instance-selector install
+  import_playbook: amazon-ec2-instance-selector/ubuntu_jammy.yml
+
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_jammy.yml
