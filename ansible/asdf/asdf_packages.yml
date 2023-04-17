@@ -59,6 +59,7 @@
     kubeconform_version: "latest"
     github_cli_version: "latest"
     crane_version: "latest"
+    act_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -527,5 +528,19 @@
       shell: |
         asdf install crane {{ crane_version }} \
              && asdf global crane {{ crane_version }}
+      when: asdf_installed.stat.exists
+
+    ## act - github workflow locally
+    - name: check if act is installed
+      shell: asdf plugin-list | grep act
+      register: asdf_list_act
+      ignore_errors: true
+    - name: Install act
+      shell: asdf plugin-add act
+      when: asdf_list_act.rc != 0
+    - name: Set act version
+      shell: |
+        asdf install act {{ act_version }} \
+             && asdf global act {{ act_version }}
       when: asdf_installed.stat.exists
 

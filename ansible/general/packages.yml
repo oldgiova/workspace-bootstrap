@@ -62,6 +62,7 @@
           - wireshark-qt
           - whois
           - cloud-init
+          - sslscan
         state: latest
         update_cache: yes
     - name: Install snap packages
