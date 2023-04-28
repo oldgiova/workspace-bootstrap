@@ -16,7 +16,10 @@
     kubectx_version: "0.9.4"
     eksctl_version: "0.67.0"
     flux_version: "0.17.2"
-    awscli_version: "2.5.8"
+    awscli_version: 
+      - "2.5.8"
+      - "2.11.15"
+    default_awscli_version: "2.11.15"
     bundler_version: "2.2.4"
     gcloud_version: "378.0.0"
     golang_version: "1.16"
@@ -188,8 +191,12 @@
       when: asdf_list_awscli.rc != 0
     - name: Set awscli version
       shell: |
-        asdf install awscli {{ awscli_version }} \
-             && asdf global awscli {{ awscli_version }}
+        asdf install awscli {{ item }}
+      when: asdf_installed.stat.exists
+      loop: "{{ awscli_version }}"
+    - name: Set awscli default version
+      shell: |
+        asdf global awscli {{ default_awscli_version }}
       when: asdf_installed.stat.exists
 
     ## bundler
