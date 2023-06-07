@@ -14,7 +14,10 @@
     default_helm_version: "3.6.3"
     stern_version: "1.20.1"
     kubectx_version: "0.9.4"
-    eksctl_version: "0.67.0"
+    eksctl_version: 
+      - "0.67.0"
+      - "0.143.0"
+    default_eksctl_version: "0.143.0"
     flux_version: "0.17.2"
     awscli_version: 
       - "2.5.8"
@@ -145,8 +148,12 @@
       when: asdf_list_eksctl.rc != 0
     - name: Set eksctl version
       shell: |
-        asdf install eksctl {{ eksctl_version }} \
-             && asdf global eksctl {{ eksctl_version }}
+        asdf install eksctl {{ item }}
+      when: asdf_installed.stat.exists
+      loop: "{{ eksctl_version }}"
+    - name: Set eksctl default version
+      shell: |
+        asdf global eksctl {{ default_eksctl_version }}
       when: asdf_installed.stat.exists
 
     ## helm
