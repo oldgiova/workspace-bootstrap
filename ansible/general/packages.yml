@@ -63,6 +63,7 @@
           - whois
           - cloud-init
           - sslscan
+          - libbz2-dev
         state: latest
         update_cache: yes
     - name: Install snap packages
