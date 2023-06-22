@@ -68,6 +68,9 @@
     github_cli_version: "latest"
     crane_version: "latest"
     act_version: "latest"
+    checkov_version: 
+      - "latest"
+    default_checkov_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -558,5 +561,23 @@
       shell: |
         asdf install act {{ act_version }} \
              && asdf global act {{ act_version }}
+      when: asdf_installed.stat.exists
+
+    ## checkov
+    - name: check if checkov is installed
+      shell: asdf plugin-list | grep checkov
+      register: asdf_list_checkov
+      ignore_errors: true
+    - name: Install checkov
+      shell: asdf plugin-add checkov
+      when: asdf_list_checkov.rc != 0
+    - name: Set checkov version
+      shell: |
+        asdf install checkov {{ item }}
+      loop: "{{ checkov_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set checkov default version
+      shell: |
+        asdf global checkov {{ default_checkov_version }}
       when: asdf_installed.stat.exists
 
