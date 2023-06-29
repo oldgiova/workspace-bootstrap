@@ -71,6 +71,9 @@
     checkov_version: 
       - "latest"
     default_checkov_version: "latest"
+    rclone_version: 
+      - "latest"
+    default_rclone_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -579,5 +582,23 @@
     - name: Set checkov default version
       shell: |
         asdf global checkov {{ default_checkov_version }}
+      when: asdf_installed.stat.exists
+
+    ## rclone
+    - name: check if rclone is installed
+      shell: asdf plugin-list | grep rclone
+      register: asdf_list_rclone
+      ignore_errors: true
+    - name: Install rclone
+      shell: asdf plugin-add rclone
+      when: asdf_list_rclone.rc != 0
+    - name: Set rclone version
+      shell: |
+        asdf install rclone {{ item }}
+      loop: "{{ rclone_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set rclone default version
+      shell: |
+        asdf global rclone {{ default_rclone_version }}
       when: asdf_installed.stat.exists
 
