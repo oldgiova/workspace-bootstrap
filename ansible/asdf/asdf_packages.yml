@@ -57,7 +57,9 @@
     dive_version: "latest"
     kubeval_version: "latest"
     azurecli_version: "latest"
-    krew_version: "latest"
+    krew_version: 
+      - "0.4.4"
+    default_krew_version: "0.4.4"
     k2tf_version: "latest"
     cmctl_version: "1.8.2"
     yq_version: "latest"
@@ -446,8 +448,12 @@
       when: asdf_list_krew.rc != 0
     - name: Set krew version
       shell: |
-        asdf install krew {{ krew_version }} \
-             && asdf global krew {{ krew_version }}
+        asdf install krew {{ item }}
+      loop: "{{ krew_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set krew default version
+      shell: |
+        asdf global krew {{ default_krew_version }}
       when: asdf_installed.stat.exists
         
      ## k2tf
