@@ -58,8 +58,9 @@
     kubeval_version: "latest"
     azurecli_version: "latest"
     krew_version: 
+      - "0.4.3"
       - "0.4.4"
-    default_krew_version: "0.4.4"
+    default_krew_version: "0.4.3"
     k2tf_version: "latest"
     cmctl_version: "1.8.2"
     yq_version: "latest"
