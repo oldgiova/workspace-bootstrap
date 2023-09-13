@@ -65,6 +65,7 @@
           - sslscan
           - libbz2-dev
           - wireguard
+          - pkg-config
         state: latest
         update_cache: yes
     - name: Install snap packages
