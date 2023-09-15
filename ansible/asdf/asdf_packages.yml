@@ -77,6 +77,7 @@
     rclone_version: 
       - "latest"
     default_rclone_version: "latest"
+    minikube_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -607,5 +608,19 @@
     - name: Set rclone default version
       shell: |
         asdf global rclone {{ default_rclone_version }}
+      when: asdf_installed.stat.exists
+
+    ## minikube
+    - name: check if minikube is installed
+      shell: asdf plugin-list | grep minikube
+      register: asdf_list_minikube
+      ignore_errors: true
+    - name: Install minikube
+      shell: asdf plugin-add minikube
+      when: asdf_list_minikube.rc != 0
+    - name: Set minikube version
+      shell: |
+        asdf install minikube {{ minikube_version }} \
+             && asdf global minikube {{ minikube_version }}
       when: asdf_installed.stat.exists
 
