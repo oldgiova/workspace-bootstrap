@@ -67,6 +67,7 @@
           - wireguard
           - pkg-config
           - black
+          - python3-virtualenv
         state: latest
         update_cache: yes
     - name: Install snap packages

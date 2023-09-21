@@ -39,6 +39,8 @@
       - "3.8.2"
       - "3.7.13"
       - "3.9.17"
+      - "3.9-dev"
+      - "pypy3.9-7.3.12"
     default_python_version: "3.9.17"
     #ruby_version: "2.6.6"
     terraform_version: 
