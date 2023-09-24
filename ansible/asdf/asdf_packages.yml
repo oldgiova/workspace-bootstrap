@@ -80,6 +80,9 @@
       - "latest"
     default_rclone_version: "latest"
     minikube_version: "latest"
+    kubescore_version: "latest"
+    kubesec_version: "latest"
+    trivy_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -624,5 +627,47 @@
       shell: |
         asdf install minikube {{ minikube_version }} \
              && asdf global minikube {{ minikube_version }}
+      when: asdf_installed.stat.exists
+
+    ## kube-score
+    - name: check if kube-score is installed
+      shell: asdf plugin-list | grep kube-score
+      register: asdf_list_kubescore
+      ignore_errors: true
+    - name: Install kube-score
+      shell: asdf plugin-add kube-score
+      when: asdf_list_kubescore.rc != 0
+    - name: Set kube-score version
+      shell: |
+        asdf install kube-score {{ kubescore_version }} \
+             && asdf global kube-score {{ kubescore_version }}
+      when: asdf_installed.stat.exists
+
+    ## kubesec
+    - name: check if kubesec is installed
+      shell: asdf plugin-list | grep kubesec
+      register: asdf_list_kubesec
+      ignore_errors: true
+    - name: Install kubesec
+      shell: asdf plugin-add kubesec
+      when: asdf_list_kubesec.rc != 0
+    - name: Set kubesec version
+      shell: |
+        asdf install kubesec {{ minikube_version }} \
+             && asdf global kubesec {{ minikube_version }}
+      when: asdf_installed.stat.exists
+
+    ## trivy
+    - name: check if trivy is installed
+      shell: asdf plugin-list | grep trivy
+      register: asdf_list_trivy
+      ignore_errors: true
+    - name: Install trivy
+      shell: asdf plugin-add trivy
+      when: asdf_list_trivy.rc != 0
+    - name: Set trivy version
+      shell: |
+        asdf install trivy {{ minikube_version }} \
+             && asdf global trivy {{ minikube_version }}
       when: asdf_installed.stat.exists
 
