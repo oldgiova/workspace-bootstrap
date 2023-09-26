@@ -84,6 +84,7 @@
     kubesec_version: "latest"
     trivy_version: "latest"
     direnv_version: "latest"
+    lokilogcli_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -684,4 +685,18 @@
       shell: |
         asdf install direnv {{ direnv_version }} \
              && asdf global direnv {{ direnv_version }}
+      when: asdf_installed.stat.exists
+
+    ## lokilogcli
+    - name: check if loki-logcli is installed
+      shell: asdf plugin-list | grep loki-logcli
+      register: asdf_list_lokilogcli
+      ignore_errors: true
+    - name: Install loki-logcli
+      shell: asdf plugin-add loki-logcli
+      when: asdf_list_lokilogcli.rc != 0
+    - name: Set loki-logcli version
+      shell: |
+        asdf install loki-logcli {{ lokilogcli_version }} \
+             && asdf global loki-logcli {{ lokilogcli_version }}
       when: asdf_installed.stat.exists
