@@ -26,7 +26,10 @@
     default_awscli_version: "2.11.15"
     bundler_version: "2.2.4"
     gcloud_version: "378.0.0"
-    golang_version: "1.16"
+    golang_version:
+      - "1.16"
+      - "1.17"
+    default_golang_version: "1.17"
     java_version: 
       - "adoptopenjdk-11.0.14+101"
       - "adoptopenjdk-17.0.3+7"
@@ -263,8 +266,12 @@
       when: asdf_list_golang.rc != 0
     - name: Set golang version
       shell: |
-        asdf install golang {{ golang_version }} \
-             && asdf global golang {{ golang_version }}
+        asdf install golang {{ item }}
+      loop: "{{ golang_version }}" 
+      when: asdf_installed.stat.exists
+    - name: Set golang default version
+      shell: |
+        asdf global golang {{ default_golang_version }}
       when: asdf_installed.stat.exists
 
     ## java
