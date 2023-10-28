@@ -68,6 +68,7 @@
           - pkg-config
           - black
           - python3-virtualenv
+          - vagrant
         state: latest
         update_cache: yes
     - name: Install snap packages
