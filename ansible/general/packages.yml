@@ -7,6 +7,10 @@
       private: yes
 
   tasks:
+    - name: Install mongodb tools
+      ansible.builtin.apt:
+        deb: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.9.0.deb
+
     - name: Install more general packages
       apt:
         pkg:
