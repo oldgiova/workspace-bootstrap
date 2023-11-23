@@ -31,7 +31,9 @@
     golang_version:
       - "1.16"
       - "1.17"
-    default_golang_version: "1.17"
+      - "1.20"
+      - "1.21.4"
+    default_golang_version: "1.20"
     java_version: 
       - "adoptopenjdk-11.0.14+101"
       - "adoptopenjdk-17.0.3+7"
