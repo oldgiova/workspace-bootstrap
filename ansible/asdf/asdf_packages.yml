@@ -94,6 +94,7 @@
     trivy_version: "latest"
     direnv_version: "latest"
     lokilogcli_version: "latest"
+    infracost_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -712,4 +713,18 @@
       shell: |
         asdf install loki-logcli {{ lokilogcli_version }} \
              && asdf global loki-logcli {{ lokilogcli_version }}
+      when: asdf_installed.stat.exists
+
+    ## infracost
+    - name: check if infracost is installed
+      shell: asdf plugin-list | grep infracost
+      register: asdf_list_infracost
+      ignore_errors: true
+    - name: Install infracost
+      shell: asdf plugin-add infracost
+      when: asdf_list_infracost.rc != 0
+    - name: Set infracost version
+      shell: |
+        asdf install infracost {{ infracost_version }} \
+             && asdf global infracost {{ infracost_version }}
       when: asdf_installed.stat.exists
