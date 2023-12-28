@@ -67,7 +67,7 @@
     yarn_version: "1.16.0"
     dive_version: "latest"
     kubeval_version: "latest"
-    azurecli_version: "latest"
+    azurecli_version: "2.53.1"
     krew_version: 
       - "0.4.3"
       - "0.4.4"
@@ -95,6 +95,10 @@
     direnv_version: "latest"
     lokilogcli_version: "latest"
     infracost_version: "latest"
+    drone_version: "latest"
+    doctl_version: 
+      - "1.102.0"
+    default_doctl_version: "1.102.0"
 
   tasks:
     - name: Check if asdf is installed
@@ -728,3 +732,36 @@
         asdf install infracost {{ infracost_version }} \
              && asdf global infracost {{ infracost_version }}
       when: asdf_installed.stat.exists
+
+    ## drone
+    - name: check if drone is installed
+      shell: asdf plugin-list | grep drone
+      register: asdf_list_drone
+      ignore_errors: true
+    - name: Install drone
+      shell: asdf plugin-add drone
+      when: asdf_list_drone.rc != 0
+    - name: Set drone version
+      shell: |
+        asdf install drone {{ drone_version }} \
+             && asdf global drone {{ drone_version }}
+      when: asdf_installed.stat.exists
+
+    ## doctl
+    - name: check if doctl is installed
+      shell: asdf plugin-list | grep doctl
+      register: asdf_list_doctl
+      ignore_errors: true
+    - name: Install doctl
+      shell: asdf plugin-add doctl
+      when: asdf_list_doctl.rc != 0
+    - name: Set doctl version
+      shell: |
+        asdf install doctl {{ item }}
+      loop: "{{ doctl_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set doctl default version
+      shell: |
+        asdf global doctl {{ default_doctl_version }}
+      when: asdf_installed.stat.exists
+
