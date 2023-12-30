@@ -99,6 +99,9 @@
     doctl_version: 
       - "1.102.0"
     default_doctl_version: "1.102.0"
+    tilt_version:  # tilt.dev
+      - "0.33.10"
+    default_tilt_version: "0.33.10"
 
   tasks:
     - name: Check if asdf is installed
@@ -765,3 +768,20 @@
         asdf global doctl {{ default_doctl_version }}
       when: asdf_installed.stat.exists
 
+    ## tilt
+    - name: check if tilt is installed
+      shell: asdf plugin-list | grep tilt
+      register: asdf_list_tilt
+      ignore_errors: true
+    - name: Install tilt
+      shell: asdf plugin-add tilt
+      when: asdf_list_tilt.rc != 0
+    - name: Set tilt version
+      shell: |
+        asdf install tilt {{ item }}
+      loop: "{{ tilt_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set tilt default version
+      shell: |
+        asdf global tilt {{ default_tilt_version }}
+      when: asdf_installed.stat.exists
