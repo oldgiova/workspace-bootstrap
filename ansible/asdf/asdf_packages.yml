@@ -102,6 +102,9 @@
     tilt_version:  # tilt.dev
       - "0.33.10"
     default_tilt_version: "0.33.10"
+    dagger_version:  # dagger.dev
+      - "0.9.5"
+    default_dagger_version: "0.9.5"
 
   tasks:
     - name: Check if asdf is installed
@@ -784,4 +787,22 @@
     - name: Set tilt default version
       shell: |
         asdf global tilt {{ default_tilt_version }}
+      when: asdf_installed.stat.exists
+
+    ## dagger
+    - name: check if dagger is installed
+      shell: asdf plugin-list | grep dagger
+      register: asdf_list_dagger
+      ignore_errors: true
+    - name: Install dagger
+      shell: asdf plugin-add dagger
+      when: asdf_list_dagger.rc != 0
+    - name: Set dagger version
+      shell: |
+        asdf install dagger {{ item }}
+      loop: "{{ dagger_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set dagger default version
+      shell: |
+        asdf global dagger {{ default_dagger_version }}
       when: asdf_installed.stat.exists

@@ -73,6 +73,7 @@
           - black
           - python3-virtualenv
           - vagrant
+          - python3.10-venv
         state: latest
         update_cache: yes
     - name: Install snap packages
