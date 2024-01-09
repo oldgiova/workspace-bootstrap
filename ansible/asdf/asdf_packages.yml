@@ -106,6 +106,9 @@
     dagger_version:  # dagger.dev
       - "0.9.5"
     default_dagger_version: "0.9.5"
+    kubent_version:
+      - "0.7.1"
+    default_kubent_version: "0.7.1"
 
   tasks:
     - name: Check if asdf is installed
@@ -806,4 +809,22 @@
     - name: Set dagger default version
       shell: |
         asdf global dagger {{ default_dagger_version }}
+      when: asdf_installed.stat.exists
+
+    ## kubent
+    - name: check if kubent is installed
+      shell: asdf plugin-list | grep kubent
+      register: asdf_list_kubent
+      ignore_errors: true
+    - name: Install kubent
+      shell: asdf plugin-add kubent
+      when: asdf_list_kubent.rc != 0
+    - name: Set kubent version
+      shell: |
+        asdf install kubent {{ item }}
+      loop: "{{ kubent_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set kubent default version
+      shell: |
+        asdf global kubent {{ default_kubent_version }}
       when: asdf_installed.stat.exists
