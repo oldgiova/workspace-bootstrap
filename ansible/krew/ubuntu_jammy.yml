@@ -5,6 +5,7 @@
       - "cert-manager"
       - "popeye"
       - "explore"
+      - "sniff"
 
   tasks:
     - name: Check if kubectl is installed

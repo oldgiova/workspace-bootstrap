@@ -109,6 +109,9 @@
     kubent_version:
       - "0.7.1"
     default_kubent_version: "0.7.1"
+    ctlptl_version:
+      - "0.8.25"
+    default_ctlptl_version: "0.8.25"
 
   tasks:
     - name: Check if asdf is installed
@@ -827,4 +830,22 @@
     - name: Set kubent default version
       shell: |
         asdf global kubent {{ default_kubent_version }}
+      when: asdf_installed.stat.exists
+
+    ## ctlptl
+    - name: check if ctlptl is installed
+      shell: asdf plugin-list | grep ctlptl
+      register: asdf_list_ctlptl
+      ignore_errors: true
+    - name: Install ctlptl
+      shell: asdf plugin-add ctlptl
+      when: asdf_list_ctlptl.rc != 0
+    - name: Set ctlptl version
+      shell: |
+        asdf install ctlptl {{ item }}
+      loop: "{{ ctlptl_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set ctlptl default version
+      shell: |
+        asdf global ctlptl {{ default_ctlptl_version }}
       when: asdf_installed.stat.exists
