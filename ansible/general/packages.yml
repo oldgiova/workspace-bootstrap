@@ -75,6 +75,7 @@
           - vagrant
           - python3.10-venv
           - yamllint
+          - wl-clipboard
         state: latest
         update_cache: yes
     - name: Install snap packages

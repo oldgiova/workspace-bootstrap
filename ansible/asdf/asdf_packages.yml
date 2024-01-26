@@ -112,6 +112,9 @@
     ctlptl_version:
       - "0.8.25"
     default_ctlptl_version: "0.8.25"
+    oci_version:
+      - "3.37.5"
+    default_oci_version: "3.37.5"
 
   tasks:
     - name: Check if asdf is installed
@@ -848,4 +851,22 @@
     - name: Set ctlptl default version
       shell: |
         asdf global ctlptl {{ default_ctlptl_version }}
+      when: asdf_installed.stat.exists
+
+    ## oci
+    - name: check if oci is installed
+      shell: asdf plugin-list | grep oci
+      register: asdf_list_oci
+      ignore_errors: true
+    - name: Install oci
+      shell: asdf plugin-add oci
+      when: asdf_list_oci.rc != 0
+    - name: Set oci version
+      shell: |
+        asdf install oci {{ item }}
+      loop: "{{ oci_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set oci default version
+      shell: |
+        asdf global oci {{ default_oci_version }}
       when: asdf_installed.stat.exists
