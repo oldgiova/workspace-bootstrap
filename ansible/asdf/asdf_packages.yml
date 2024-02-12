@@ -115,6 +115,9 @@
     oci_version:
       - "3.37.5"
     default_oci_version: "3.37.5"
+    hcloud_version:
+      - "1.42.0"
+    default_hcloud_version: "1.42.0"
 
   tasks:
     - name: Check if asdf is installed
@@ -869,4 +872,22 @@
     - name: Set oci default version
       shell: |
         asdf global oci {{ default_oci_version }}
+      when: asdf_installed.stat.exists
+
+    ## hcloud
+    - name: check if hcloud is installed
+      shell: asdf plugin-list | grep hcloud
+      register: asdf_list_hcloud
+      ignore_errors: true
+    - name: Install hcloud
+      shell: asdf plugin-add hcloud
+      when: asdf_list_hcloud.rc != 0
+    - name: Set hcloud version
+      shell: |
+        asdf install hcloud {{ item }}
+      loop: "{{ hcloud_version }}"
+      when: asdf_installed.stat.exists
+    - name: Set hcloud default version
+      shell: |
+        asdf global hcloud {{ default_hcloud_version }}
       when: asdf_installed.stat.exists
