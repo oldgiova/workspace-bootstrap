@@ -1,0 +1,22 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  
+
+  tasks:
+    - name: Add quickemu repo
+      ansible.builtin.shell: apt-add-repository ppa:flexiondotorg/quickemu
+      
+    - name: Install quickemu
+      apt:
+        pkg:
+          - quickemu
+        state: latest
+        update_cache: yes
+
+    

@@ -76,6 +76,9 @@
           - python3.10-venv
           - yamllint
           - wl-clipboard
+          - qemu
+          - spice-client-gtk
+          - zsync
         state: latest
         update_cache: yes
     - name: Install snap packages

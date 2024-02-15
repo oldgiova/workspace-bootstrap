@@ -34,3 +34,5 @@
 
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_jammy.yml
+- name: Quickemu setup
+  import_playbook: quickemu/ubuntu_jammy.yml
