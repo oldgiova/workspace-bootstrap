@@ -724,6 +724,29 @@
              && asdf global direnv {{ direnv_version }}
       when: asdf_installed.stat.exists
 
+    ## direnv conf
+    - name: Ensure directory exists
+      when: asdf_installed.stat.exists
+      ansible.builtin.file:
+        path: ~/.config/direnv
+        state: directory
+
+    - name: Create direnv.toml file
+      when: asdf_installed.stat.exists
+      ansible.builtin.file:
+        path: ~/.config/direnv/direnv.toml
+        state: touch
+
+    - name: Add content to direnv.toml
+      when: asdf_installed.stat.exists
+      ansible.builtin.lineinfile:
+        path: ~/.config/direnv/direnv.toml
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - "[global]"
+        - "load_dotenv = true"
+
     ## lokilogcli
     - name: check if loki-logcli is installed
       shell: asdf plugin-list | grep loki-logcli
