@@ -93,7 +93,6 @@
     kubescore_version: "latest"
     kubesec_version: "latest"
     trivy_version: "latest"
-    direnv_version: "latest"
     lokilogcli_version: "latest"
     infracost_version: "latest"
     drone_version: "latest"
@@ -709,43 +708,6 @@
         asdf install trivy {{ trivy_version }} \
              && asdf global trivy {{ trivy_version }}
       when: asdf_installed.stat.exists
-
-    ## direnv
-    - name: check if direnv is installed
-      shell: asdf plugin-list | grep direnv
-      register: asdf_list_direnv
-      ignore_errors: true
-    - name: Install direnv
-      shell: asdf plugin-add direnv
-      when: asdf_list_direnv.rc != 0
-    - name: Set direnv version
-      shell: |
-        asdf install direnv {{ direnv_version }} \
-             && asdf global direnv {{ direnv_version }}
-      when: asdf_installed.stat.exists
-
-    ## direnv conf
-    - name: Ensure directory exists
-      when: asdf_installed.stat.exists
-      ansible.builtin.file:
-        path: ~/.config/direnv
-        state: directory
-
-    - name: Create direnv.toml file
-      when: asdf_installed.stat.exists
-      ansible.builtin.file:
-        path: ~/.config/direnv/direnv.toml
-        state: touch
-
-    - name: Add content to direnv.toml
-      when: asdf_installed.stat.exists
-      ansible.builtin.lineinfile:
-        path: ~/.config/direnv/direnv.toml
-        line: "{{ item }}"
-        create: yes
-      loop:
-        - "[global]"
-        - "load_dotenv = true"
 
     ## lokilogcli
     - name: check if loki-logcli is installed

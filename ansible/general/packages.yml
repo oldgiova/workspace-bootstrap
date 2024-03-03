@@ -79,6 +79,7 @@
           - qemu
           - spice-client-gtk
           - zsync
+          - direnv
         state: latest
         update_cache: yes
     - name: Install snap packages
