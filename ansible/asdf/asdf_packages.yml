@@ -103,7 +103,7 @@
       - "0.33.10"
     default_tilt_version: "0.33.10"
     dagger_version:  # dagger.dev
-      - "0.9.5"
+      - "0.10.1"
     default_dagger_version: "0.9.5"
     kubent_version:
       - "0.7.1"
