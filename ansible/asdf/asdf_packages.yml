@@ -1,7 +1,7 @@
 - hosts: 127.0.0.1
   connection: local
   vars:
-    kubectl_version: 
+    kubectl_version:
       - "1.20.5"
       - "1.21.9"
       - "1.22.8"
@@ -10,19 +10,19 @@
       - "1.25.12"
       - "1.26.6"
     default_kubectl_version: "1.23.14"
-    helm_version: 
+    helm_version:
       - "3.6.3"
       - "3.9.0"
       - "3.12.0"
     default_helm_version: "3.12.0"
     stern_version: "1.20.1"
     kubectx_version: "0.9.4"
-    eksctl_version: 
+    eksctl_version:
       - "0.67.0"
       - "0.143.0"
     default_eksctl_version: "0.143.0"
     flux_version: "2.1.1"
-    awscli_version: 
+    awscli_version:
       - "2.5.8"
       - "2.11.15"
     default_awscli_version: "2.11.15"
@@ -34,15 +34,18 @@
       - "1.20"
       - "1.21.4"
     default_golang_version: "1.20"
-    java_version: 
+    java_version:
       - "adoptopenjdk-11.0.14+101"
       - "adoptopenjdk-17.0.3+7"
     default_java_version: "adoptopenjdk-17.0.3+7"
     kind_version: "latest"
     maven_version: "3.5.3"
     mongosh_version: "1.2.1"
-    nodejs_version: "14.16.1"
-    python_version: 
+    nodejs_version:
+      - "14.16.1"
+      - "18.20.0"
+    default_nodejs_version: "18.20.0"
+    python_version:
       - "3.8.2"
       - "3.7.13"
       - "3.9.17"
@@ -50,8 +53,7 @@
       - "pypy3.9-7.3.12"
       - "3.10.13"
     default_python_version: "3.9.17"
-    #ruby_version: "2.6.6"
-    terraform_version: 
+    terraform_version:
       - "1.1.2"
       - "1.1.7"
       - "0.15.5"
@@ -61,7 +63,7 @@
       - "1.5.7"
       - "1.6.4"
     default_terraform_version: "1.6.4"
-    terragrunt_version: 
+    terragrunt_version:
       - "0.36.3"
       - "0.29.7"
     default_terragrunt_version: "0.36.3"
@@ -69,7 +71,7 @@
     dive_version: "latest"
     kubeval_version: "latest"
     azurecli_version: "2.53.1"
-    krew_version: 
+    krew_version:
       - "0.4.3"
       - "0.4.4"
     default_krew_version: "0.4.3"
@@ -348,7 +350,7 @@
         asdf install maven {{ maven_version }} \
              && asdf global maven {{ maven_version }}
       when: asdf_installed.stat.exists
-    
+
     ## mongosh
     - name: check if mongosh is installed
       shell: asdf plugin-list | grep mongosh
@@ -373,23 +375,13 @@
       when: asdf_list_nodejs.rc != 0
     - name: Set nodejs version
       shell: |
-        asdf install nodejs {{ nodejs_version }} \
-             && asdf global nodejs {{ nodejs_version }}
+        asdf install nodejs {{ item }}
+      loop: "{{ nodejs_version }}"
       when: asdf_installed.stat.exists
-
-    # ## ruby
-    # - name: check if ruby is installed
-    #   shell: asdf plugin-list | grep ruby
-    #   register: asdf_list_ruby
-    #   ignore_errors: true
-    # - name: Install ruby
-    #   shell: asdf plugin-add ruby
-    #   when: asdf_list_ruby.rc != 0
-    # - name: Set ruby version
-    #   shell: |
-    #     asdf install ruby {{ ruby_version }} \
-    #          && asdf global ruby {{ ruby_version }}
-    #   when: asdf_installed.stat.exists
+    - name: Set nodejs default version
+      shell: |
+        asdf global nodejs {{ default_nodejs_version }}
+      when: asdf_installed.stat.exists
 
     ## terraform
     - name: check if terraform is installed
