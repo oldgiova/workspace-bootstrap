@@ -25,6 +25,7 @@
           - zip
           - unzip
           - vim
+          - neovim
           - imagemagick
           - remmina
           - python3
