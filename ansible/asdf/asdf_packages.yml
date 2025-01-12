@@ -85,7 +85,6 @@
     default_minio_version: "latest"
     kubeconform_version: "latest"
     github_cli_version: "latest"
-    crane_version: "latest"
     act_version: "latest"
     checkov_version: 
       - "latest"
@@ -97,7 +96,7 @@
     kubescore_version: "latest"
     kubesec_version: "latest"
     trivy_version: "latest"
-    lokilogcli_version: "latest"
+    lokilogcli_version: "3.3.2"
     infracost_version: "latest"
     drone_version: "latest"
     doctl_version: 
@@ -107,8 +106,8 @@
       - "0.33.10"
     default_tilt_version: "0.33.10"
     dagger_version:  # dagger.dev
-      - "0.10.1"
-    default_dagger_version: "0.9.5"
+      - "latest"
+    default_dagger_version: "latest"
     kubent_version:
       - "0.7.1"
     default_kubent_version: "0.7.1"
@@ -584,20 +583,6 @@
       shell: |
         asdf install github-cli {{ github_cli_version }} \
              && asdf global github-cli {{ github_cli_version }}
-      when: asdf_installed.stat.exists
-
-    ## crane
-    - name: check if crane is installed
-      shell: asdf plugin-list | grep crane
-      register: asdf_list_crane
-      ignore_errors: true
-    - name: Install crane
-      shell: asdf plugin-add crane
-      when: asdf_list_crane.rc != 0
-    - name: Set crane version
-      shell: |
-        asdf install crane {{ crane_version }} \
-             && asdf global crane {{ crane_version }}
       when: asdf_installed.stat.exists
 
     ## act - github workflow locally
