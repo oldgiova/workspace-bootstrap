@@ -9,7 +9,9 @@
       - "1.23.14"
       - "1.25.12"
       - "1.26.6"
-    default_kubectl_version: "1.23.14"
+      - "1.29.5"
+      - "1.30.1"
+    default_kubectl_version: "1.29.5"
     helm_version:
       - "3.6.3"
       - "3.9.0"

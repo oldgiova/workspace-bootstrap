@@ -25,7 +25,7 @@
           - zip
           - unzip
           - vim
-          - neovim
+          # - neovim too old
           - imagemagick
           - remmina
           - python3
@@ -42,7 +42,7 @@
           - network-manager-openvpn-gnome
           - xclip
           - git-crypt
-          - graphicsmagick 
+          - graphicsmagick
           - csvkit
           - cifs-utils
           - pwgen
@@ -52,7 +52,7 @@
           - libffi-dev
           - bzip2
           - libreadline-dev
-          - virtualbox
+            #- virtualbox
           - chrome-gnome-shell
           - gnome-shell-extensions
           - gnome-shell-extension-manager
@@ -81,6 +81,7 @@
           - spice-client-gtk
           - zsync
           - direnv
+          - silversearcher-ag
         state: latest
         update_cache: yes
     - name: Install snap packages
