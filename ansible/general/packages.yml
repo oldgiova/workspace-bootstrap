@@ -82,6 +82,7 @@
           - zsync
           - direnv
           - silversearcher-ag
+          - ncdu
         state: latest
         update_cache: yes
     - name: Install snap packages
