@@ -75,12 +75,12 @@
           - vagrant
           - yamllint
           - wl-clipboard
-          - qemu
           - spice-client-gtk
           - zsync
           - direnv
           - silversearcher-ag
           - ncdu
           - podman
+          - python3-pexpect
         state: latest
         update_cache: yes
