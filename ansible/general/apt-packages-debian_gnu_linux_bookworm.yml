@@ -73,7 +73,6 @@
           - black
           - python3-virtualenv
           - vagrant
-          - python3.10-venv
           - yamllint
           - wl-clipboard
           - qemu
