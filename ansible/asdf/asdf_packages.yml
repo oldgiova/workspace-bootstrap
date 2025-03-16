@@ -123,6 +123,9 @@
     just_version:
       - "latest"
     default_just_version: "latest"
+    sops_version:
+      - "3.9.4"
+    default_sops_version: "3.9.4"
 
   tasks:
     - name: Check if asdf is installed
@@ -875,4 +878,22 @@
     - name: set just default version
       shell: |
         asdf global just {{ default_just_version }}
+      when: asdf_installed.stat.exists
+
+    ## sops
+    - name: check if sops is installed
+      shell: asdf plugin-list | grep sops
+      register: asdf_list_sops
+      ignore_errors: true
+    - name: install sops
+      shell: asdf plugin-add sops
+      when: asdf_list_sops.rc != 0
+    - name: set sops version
+      shell: |
+        asdf install sops {{ item }}
+      loop: "{{ sops_version }}"
+      when: asdf_installed.stat.exists
+    - name: set sops default version
+      shell: |
+        asdf global sops {{ default_sops_version }}
       when: asdf_installed.stat.exists
