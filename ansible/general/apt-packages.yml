@@ -83,19 +83,6 @@
           - direnv
           - silversearcher-ag
           - ncdu
+          - podman
         state: latest
         update_cache: yes
-    - name: Install snap packages
-      community.general.snap:
-        name: 
-          - slack
-          - gimp
-          - authy
-          - code
-          - dbeaver-ce
-          - spotify
-          - opera
-          - vlc
-          - postman
-          - zoom-client
-        classic: yes

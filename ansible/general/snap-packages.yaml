@@ -1,0 +1,27 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  tasks:
+    #- name: Install mongodb tools
+    #  ansible.builtin.apt:
+    #    deb: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.9.0.deb
+
+    - name: Install snap packages
+      community.general.snap:
+        name: 
+          - slack
+          - gimp
+          - authy
+          - code
+          - dbeaver-ce
+          - spotify
+          - opera
+          - vlc
+          - postman
+          - zoom-client
+        classic: yes
