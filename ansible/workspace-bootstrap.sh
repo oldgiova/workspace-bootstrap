@@ -6,6 +6,8 @@
 # finding release name
 . /etc/os-release
 RELEASE=${NAME,,}_${VERSION_CODENAME,,}
+RELEASE="${RELEASE// /_}"
+RELEASE="${RELEASE//\//_}"
 
 if [[ $(basename ${PWD}) == "workspace-bootstrap"  ]]; then
   cd ansible
@@ -13,7 +15,7 @@ fi
 
 if [[ ! -f ${RELEASE}.yml ]]; then
   echo ""
-  echo "[ERROR] Release ${NAME} ${VERSION_CODENAME} not supported yet."
+  echo "[ERROR] Release ${RELEASE} not supported yet."
   exit 0
 fi
 
