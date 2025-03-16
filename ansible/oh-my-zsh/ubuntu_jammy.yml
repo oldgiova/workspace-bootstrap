@@ -107,15 +107,3 @@
         depth: 1
         dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
       when: not packer_installed.stat.exists
-
-    - name: Register copilot Nvim
-      stat:
-        path: "~/.config/nvim/pack/github/start/copilot.vim"
-      register: copilot_installed
-      ignore_errors: true
-    - name: Install copilot Nvim
-      ansible.builtin.git:
-        repo: https://github.com/github/copilot.vim.git 
-        depth: 1
-        dest: "~/.config/nvim/pack/github/start/copilot.vim"
-      when: not copilot_installed.stat.exists
