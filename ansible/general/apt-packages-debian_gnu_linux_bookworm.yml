@@ -1,0 +1,87 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  tasks:
+    #- name: Install mongodb tools
+    #  ansible.builtin.apt:
+    #    deb: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.9.0.deb
+
+    - name: Install more general packages
+      apt:
+        pkg:
+          - build-essential
+          - libpango1.0-0
+          - keepass2
+          - keepassxc
+          - snapd
+          - git
+          - curl
+          - zsh
+          - zip
+          - unzip
+          - vim
+          # - neovim too old
+          - imagemagick
+          - remmina
+          - python3
+          - python3-dev
+          - bzip2
+          - libssl-dev
+          - pcscd
+          - libccid
+          - ca-certificates
+          - gnupg
+          - lsb-release
+          - postgresql-client
+          - network-manager-openvpn
+          - network-manager-openvpn-gnome
+          - xclip
+          - git-crypt
+          - graphicsmagick
+          - csvkit
+          - cifs-utils
+          - pwgen
+          - jq
+          - pass
+          - webext-browserpass
+          - libffi-dev
+          - bzip2
+          - libreadline-dev
+            #- virtualbox
+          - chrome-gnome-shell
+          - gnome-shell-extensions
+          - gnome-shell-extension-manager
+          - fzf
+          - ripgrep
+          - dconf-cli
+          - docker-compose
+          - nethogs
+          - flameshot
+          - apache2-utils
+          - wireshark-qt
+          - whois
+          - cloud-init
+          - sslscan
+          - libbz2-dev
+          - wireguard
+          - pkg-config
+          - black
+          - python3-virtualenv
+          - vagrant
+          - python3.10-venv
+          - yamllint
+          - wl-clipboard
+          - qemu
+          - spice-client-gtk
+          - zsync
+          - direnv
+          - silversearcher-ag
+          - ncdu
+          - podman
+        state: latest
+        update_cache: yes

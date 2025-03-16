@@ -5,7 +5,7 @@
   connection: local
 
 - name: Install apt packages
-  import_playbook: general/apt-packages.yml
+  import_playbook: general/apt-packages-debian_gnu_linux_bookworm.yml
 
 - name: Oh My ZSH Setup
   import_playbook: oh-my-zsh/debian_gnu_linux_bookworm.yml
