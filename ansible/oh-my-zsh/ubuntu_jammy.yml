@@ -47,7 +47,7 @@
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
         dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
       when: not zsh_syntax_highlighting_installed.stat.exists
-      
+
     - name: Check if oh my zsh dracula theme is installed
       stat:
         path: "~/.oh-my-zsh/themes/dracula-source/dracula.zsh-theme"
@@ -64,7 +64,7 @@
         dest: "~/.oh-my-zsh/themes/dracula.zsh-theme"
         state: link
       when: not zsh_draculatheme_installed.stat.exists
-      
+
     - name: Check if terminal dracula theme is installed
       stat:
         path: "~/src/github/dracula/gnome-terminal"
@@ -86,7 +86,7 @@
         repo: https://github.com/dracula/visual-studio-code.git
         dest: "~/.vscode/extensions/theme-dracula"
       when: not zsh_draculathemevscode_installed.stat.exists
-      
+
     - name: Change default shell
       expect:
         command: "chsh -s /usr/bin/zsh"
@@ -96,3 +96,14 @@
       become: yes
       when: not installed.stat.exists
 
+    - name: Register Packer Nvim
+      stat:
+        path: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+      register: packer_installed
+      ignore_errors: true
+    - name: Install Packer Nvim
+      ansible.builtin.git:
+        repo: https://github.com/wbthomason/packer.nvim.git 
+        depth: 1
+        dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+      when: not packer_installed.stat.exists
