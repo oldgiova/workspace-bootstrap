@@ -16,7 +16,6 @@
         name: 
           - slack
           - gimp
-          - authy
           - code
           - dbeaver-ce
           - spotify
