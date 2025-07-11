@@ -84,5 +84,6 @@
           - silversearcher-ag
           - ncdu
           - podman
+          - resolvconf
         state: latest
         update_cache: yes

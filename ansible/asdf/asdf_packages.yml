@@ -47,7 +47,8 @@
     nodejs_version:
       - "14.16.1"
       - "18.20.0"
-    default_nodejs_version: "18.20.0"
+      - "22.17.0"
+    default_nodejs_version: "22.17.0"
     python_version:
       - "3.8.2"
       - "3.7.13"
