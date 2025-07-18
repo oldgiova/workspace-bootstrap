@@ -31,12 +31,12 @@
     default_awscli_version: "2.11.15"
     bundler_version: "2.2.4"
     gcloud_version: "378.0.0"
-    golang_version:
-      - "1.16"
-      - "1.17"
-      - "1.20"
-      - "1.21.4"
-    default_golang_version: "1.20"
+    #golang_version:
+    #  - "1.16"
+    #  - "1.17"
+    #  - "1.20"
+    #  - "1.21.4"
+    #default_golang_version: "1.20"
     java_version:
       - "adoptopenjdk-11.0.14+101"
       - "adoptopenjdk-17.0.3+7"
@@ -298,23 +298,23 @@
              && asdf global gcloud {{ gcloud_version }}
       when: asdf_installed.stat.exists
     
-    ## golang
-    - name: check if golang is installed
-      shell: asdf plugin-list | grep golang
-      register: asdf_list_golang
-      ignore_errors: true
-    - name: Install golang
-      shell: asdf plugin-add golang
-      when: asdf_list_golang.rc != 0
-    - name: Set golang version
-      shell: |
-        asdf install golang {{ item }}
-      loop: "{{ golang_version }}" 
-      when: asdf_installed.stat.exists
-    - name: Set golang default version
-      shell: |
-        asdf global golang {{ default_golang_version }}
-      when: asdf_installed.stat.exists
+    ### golang
+    #- name: check if golang is installed
+    #  shell: asdf plugin-list | grep golang
+    #  register: asdf_list_golang
+    #  ignore_errors: true
+    #- name: Install golang
+    #  shell: asdf plugin-add golang
+    #  when: asdf_list_golang.rc != 0
+    #- name: Set golang version
+    #  shell: |
+    #    asdf install golang {{ item }}
+    #  loop: "{{ golang_version }}" 
+    #  when: asdf_installed.stat.exists
+    #- name: Set golang default version
+    #  shell: |
+    #    asdf global golang {{ default_golang_version }}
+    #  when: asdf_installed.stat.exists
 
     ## java
     - name: check if java is installed
