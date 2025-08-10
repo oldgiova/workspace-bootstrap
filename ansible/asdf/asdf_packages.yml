@@ -130,6 +130,7 @@
     sops_version:
       - "3.9.4"
     default_sops_version: "3.9.4"
+    default_lazygit_version: "latest"
 
   tasks:
     - name: Check if asdf is installed
@@ -900,4 +901,22 @@
     - name: set sops default version
       shell: |
         asdf global sops {{ default_sops_version }}
+      when: asdf_installed.stat.exists
+
+    ## lazygit
+    - name: check if lazygit is installed
+      shell: asdf plugin-list | grep lazygit
+      register: asdf_list_lazygit
+      ignore_errors: true
+    - name: install lazygit
+      shell: asdf plugin-add lazygit
+      when: asdf_list_lazygit.rc != 0
+    - name: set lazygit version
+      shell: |
+        asdf install lazygit {{ item }}
+      loop: "{{ lazygit_version }}"
+      when: asdf_installed.stat.exists
+    - name: set lazygit default version
+      shell: |
+        asdf global lazygit {{ default_lazygit_version }}
       when: asdf_installed.stat.exists
