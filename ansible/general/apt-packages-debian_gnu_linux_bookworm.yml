@@ -56,7 +56,6 @@
           - chrome-gnome-shell
           - gnome-shell-extensions
           - gnome-shell-extension-manager
-          - fzf
           - ripgrep
           - dconf-cli
           - docker-compose
