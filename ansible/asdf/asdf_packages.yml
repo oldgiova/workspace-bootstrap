@@ -131,9 +131,6 @@
       - "3.9.4"
     default_sops_version: "3.9.4"
     default_lazygit_version: "latest"
-    fzf_version:
-      - "0.51.0"
-    default_fzf_version: "0.51.0"
 
   tasks:
     - name: Check if asdf is installed
@@ -922,22 +919,4 @@
     - name: set lazygit default version
       shell: |
         asdf global lazygit {{ default_lazygit_version }}
-      when: asdf_installed.stat.exists
-
-    ## fzf
-    - name: check if fzf is installed
-      shell: asdf plugin-list | grep fzf
-      register: asdf_list_fzf
-      ignore_errors: true
-    - name: install fzf
-      shell: asdf plugin-add fzf
-      when: asdf_list_fzf.rc != 0
-    - name: set fzf version
-      shell: |
-        asdf install fzf {{ item }}
-      loop: "{{ fzf_version }}"
-      when: asdf_installed.stat.exists
-    - name: set fzf default version
-      shell: |
-        asdf global fzf {{ default_fzf_version }}
       when: asdf_installed.stat.exists
