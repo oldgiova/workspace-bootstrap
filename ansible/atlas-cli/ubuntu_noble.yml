@@ -1,0 +1,32 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  tasks:
+    - name: Check if atlas cli is installed
+      command: dpkg-query -W mongodb-atlas-cli
+      register: atlascli_check_deb
+      failed_when: atlascli_check_deb.rc > 1
+      changed_when: atlascli_check_deb.rc == 1
+
+    - name: Download Atlas cli
+      get_url:
+        url=https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.4.0_linux_x86_64.deb
+        dest="/tmp/mongodb-atlas.deb"
+      become: false
+      when: atlascli_check_deb.rc == 1
+
+    - name: Install Atlas cli
+      apt: deb="/tmp/mongodb-atlas.deb"
+      become: true
+      when: atlascli_check_deb.rc == 1
+    
+    - name: Remove old package file
+      file: 
+        path: "/tmp/mongodb-atlas.deb"
+        state: absent
+

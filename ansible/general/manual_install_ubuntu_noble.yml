@@ -1,0 +1,34 @@
+---
+- name: Install delta on Ubuntu Noble
+  hosts: localhost
+  become: true
+  vars:
+    delta_version: "0.18.2"  # Update to latest version as needed
+    delta_deb_url: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
+    delta_deb_path: "/tmp/git-delta_{{ delta_version }}_amd64.deb"
+
+  tasks:
+    - name: Download delta .deb package
+      ansible.builtin.get_url:
+        url: "{{ delta_deb_url }}"
+        dest: "{{ delta_deb_path }}"
+        mode: '0644'
+
+    - name: Install delta from .deb package
+      ansible.builtin.apt:
+        deb: "{{ delta_deb_path }}"
+        state: present
+
+    - name: Clean up downloaded .deb file
+      ansible.builtin.file:
+        path: "{{ delta_deb_path }}"
+        state: absent
+
+    - name: Verify delta installation
+      ansible.builtin.command: delta --version
+      register: delta_version_output
+      changed_when: false
+
+    - name: Display delta version
+      ansible.builtin.debug:
+        msg: "Installed {{ delta_version_output.stdout }}"

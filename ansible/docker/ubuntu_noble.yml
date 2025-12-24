@@ -1,0 +1,41 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  
+
+  tasks:
+    - name: Checks for Docker signing key
+      stat:
+        path: /usr/share/keyrings/docker-archive-keyring.gpg
+      register: docker_signing_key_installed
+      ignore_errors: true
+
+    - name: Add Docker signing key
+      ansible.builtin.shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+      when: docker_signing_key_installed.stat.exists == False
+      
+    - name: Add specified repository into sources list
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Install Docker packages
+      apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+        update_cache: yes
+
+    - name: Add current user to docker group
+      ansible.builtin.user:
+        name: "{{ lookup('env', 'USER') }}"
+        groups: docker
+        append: yes
+    

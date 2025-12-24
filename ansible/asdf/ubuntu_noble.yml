@@ -1,0 +1,18 @@
+#- hosts: 127.0.0.1
+#  connection: local
+#
+#  tasks:
+#    - name: Check if asdf is installed
+#      stat:
+#        path: ~/.asdf
+#      register: installed
+#      ignore_errors: true
+#
+#    - name: Install asdf
+#      ansible.builtin.git:
+#        repo: https://github.com/asdf-vm/asdf.git
+#        dest: "~/.asdf"
+#        version: v0.9.0
+#      when: not installed.stat.exists
+
+    

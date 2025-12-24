@@ -30,7 +30,7 @@
       - "2.11.15"
     default_awscli_version: "2.11.15"
     bundler_version: "2.2.4"
-    gcloud_version: "378.0.0"
+    gcloud_version: "550.0.0"
     #golang_version:
     #  - "1.16"
     #  - "1.17"
@@ -76,7 +76,7 @@
     yarn_version: "1.16.0"
     dive_version: "latest"
     kubeval_version: "latest"
-    azurecli_version: "2.53.1"
+    azurecli_version: "2.81.0"
     krew_version:
       - "0.4.3"
       - "0.4.4"
@@ -130,7 +130,9 @@
     sops_version:
       - "3.9.4"
     default_sops_version: "3.9.4"
-    default_lazygit_version: "latest"
+    lazygit_version: 
+      - "0.57.0"
+    default_lazygit_version: "0.57.0"
 
   tasks:
     - name: Check if asdf is installed
@@ -141,11 +143,11 @@
   
     ## python
     - name: check if python is installed
-      shell: asdf plugin-list | grep python
+      shell: asdf plugin list | grep python
       register: asdf_list_python
       ignore_errors: true
     - name: Install python
-      shell: asdf plugin-add python
+      shell: asdf plugin add python
       when: asdf_list_python.rc != 0
     - name: Set python version
       shell: |
@@ -154,16 +156,16 @@
       when: asdf_installed.stat.exists
     - name: Set python default version
       shell: |
-        asdf global python {{ default_python_version }}
+        asdf set -u python {{ default_python_version }}
       when: asdf_installed.stat.exists
       
     ## kubectl  
     - name: check if kubectl is installed
-      shell: asdf plugin-list | grep kubectl
+      shell: asdf plugin list | grep kubectl
       register: asdf_list_kubectl
       ignore_errors: true
     - name: Install kubectl
-      shell: asdf plugin-add kubectl
+      shell: asdf plugin add kubectl
       when: asdf_list_kubectl.rc != 0
     - name: Set kubectl version
       shell: |
@@ -172,44 +174,44 @@
       when: asdf_installed.stat.exists
     - name: Set kubectl default version
       shell: |
-        asdf global kubectl {{ default_kubectl_version }}
+        asdf set -u kubectl {{ default_kubectl_version }}
       when: asdf_installed.stat.exists
     
     ## kubectx
     - name: Check if kubectx is installed
-      shell: asdf plugin-list | grep kubectx
+      shell: asdf plugin list | grep kubectx
       register: asdf_list_kubectx
       ignore_errors: true
     - name: Install kubectx
-      shell: asdf plugin-add kubectx
+      shell: asdf plugin add kubectx
       when: asdf_list_kubectx.rc != 0
     - name: Set kubectx version
       shell: |
         asdf install kubectx {{ kubectx_version }} \
-          && asdf global kubectx {{ kubectx_version }}
+          && asdf set -u kubectx {{ kubectx_version }}
       when: asdf_installed.stat.exists
     
     ## stern
     - name: check if stern is installed
-      shell: asdf plugin-list | grep stern
+      shell: asdf plugin list | grep stern
       register: asdf_list_stern
       ignore_errors: true
     - name: Install stern
-      shell: asdf plugin-add stern
+      shell: asdf plugin add stern
       when: asdf_list_stern.rc != 0
     - name: Set stern version
       shell: |
         asdf install stern {{ stern_version }} \
-             && asdf global stern {{ stern_version }}
+             && asdf set -u stern {{ stern_version }}
       when: asdf_installed.stat.exists
       
     ## eksctl
     - name: check if eksctl is installed
-      shell: asdf plugin-list | grep eksctl
+      shell: asdf plugin list | grep eksctl
       register: asdf_list_eksctl
       ignore_errors: true
     - name: Install eksctl
-      shell: asdf plugin-add eksctl
+      shell: asdf plugin add eksctl
       when: asdf_list_eksctl.rc != 0
     - name: Set eksctl version
       shell: |
@@ -218,16 +220,16 @@
       loop: "{{ eksctl_version }}"
     - name: Set eksctl default version
       shell: |
-        asdf global eksctl {{ default_eksctl_version }}
+        asdf set -u eksctl {{ default_eksctl_version }}
       when: asdf_installed.stat.exists
 
     ## helm
     - name: check if helm is installed
-      shell: asdf plugin-list | grep helm
+      shell: asdf plugin list | grep helm
       register: asdf_list_helm
       ignore_errors: true
     - name: Install helm
-      shell: asdf plugin-add helm
+      shell: asdf plugin add helm
       when: asdf_list_helm.rc != 0
     - name: Set helm version
       shell: |
@@ -236,30 +238,30 @@
       when: asdf_installed.stat.exists
     - name: Set helm default version
       shell: |
-        asdf global helm {{ default_helm_version }}
+        asdf set -u helm {{ default_helm_version }}
       when: asdf_installed.stat.exists
    
     ## flux
     - name: check if flux is installed
-      shell: asdf plugin-list | grep flux2
+      shell: asdf plugin list | grep flux2
       register: asdf_list_flux
       ignore_errors: true
     - name: Install flux
-      shell: asdf plugin-add flux2
+      shell: asdf plugin add flux2
       when: asdf_list_flux.rc != 0
     - name: Set flux version
       shell: |
         asdf install flux2 {{ flux_version }} \
-             && asdf global flux2 {{ flux_version }}
+             && asdf set -u flux2 {{ flux_version }}
       when: asdf_installed.stat.exists
 
     ## awscl
     - name: check if awscli is installed
-      shell: asdf plugin-list | grep awscli
+      shell: asdf plugin list | grep awscli
       register: asdf_list_awscli
       ignore_errors: true
     - name: Install awscli
-      shell: asdf plugin-add awscli
+      shell: asdf plugin add awscli
       when: asdf_list_awscli.rc != 0
     - name: Set awscli version
       shell: |
@@ -268,44 +270,44 @@
       loop: "{{ awscli_version }}"
     - name: Set awscli default version
       shell: |
-        asdf global awscli {{ default_awscli_version }}
+        asdf set -u awscli {{ default_awscli_version }}
       when: asdf_installed.stat.exists
 
     ## bundler
     - name: check if bundler is installed
-      shell: asdf plugin-list | grep bundler
+      shell: asdf plugin list | grep bundler
       register: asdf_list_bundler
       ignore_errors: true
     - name: Install bundler
-      shell: asdf plugin-add bundler
+      shell: asdf plugin add bundler
       when: asdf_list_bundler.rc != 0
     - name: Set bundler version
       shell: |
         asdf install bundler {{ bundler_version }} \
-             && asdf global bundler {{ bundler_version }}
+             && asdf set -u bundler {{ bundler_version }}
       when: asdf_installed.stat.exists
 
-    ## gcloud
-    - name: check if gcloud is installed
-      shell: asdf plugin-list | grep gcloud
-      register: asdf_list_gcloud
-      ignore_errors: true
-    - name: Install gcloud
-      shell: asdf plugin-add gcloud
-      when: asdf_list_gcloud.rc != 0
-    - name: Set gcloud version
-      shell: |
-        asdf install gcloud {{ gcloud_version }} \
-             && asdf global gcloud {{ gcloud_version }}
-      when: asdf_installed.stat.exists
+    ### gcloud
+    #- name: check if gcloud is installed
+    #  shell: asdf plugin list | grep gcloud
+    #  register: asdf_list_gcloud
+    #  ignore_errors: true
+    #- name: Install gcloud
+    #  shell: asdf plugin add gcloud
+    #  when: asdf_list_gcloud.rc != 0
+    #- name: Set gcloud version
+    #  shell: |
+    #    asdf install gcloud {{ gcloud_version }} \
+    #         && asdf set -u gcloud {{ gcloud_version }}
+    #  when: asdf_installed.stat.exists
     
     ### golang
     #- name: check if golang is installed
-    #  shell: asdf plugin-list | grep golang
+    #  shell: asdf plugin list | grep golang
     #  register: asdf_list_golang
     #  ignore_errors: true
     #- name: Install golang
-    #  shell: asdf plugin-add golang
+    #  shell: asdf plugin add golang
     #  when: asdf_list_golang.rc != 0
     #- name: Set golang version
     #  shell: |
@@ -314,16 +316,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set golang default version
     #  shell: |
-    #    asdf global golang {{ default_golang_version }}
+    #    asdf set -u golang {{ default_golang_version }}
     #  when: asdf_installed.stat.exists
 
     ## java
     - name: check if java is installed
-      shell: asdf plugin-list | grep java
+      shell: asdf plugin list | grep java
       register: asdf_list_java
       ignore_errors: true
     - name: Install java
-      shell: asdf plugin-add java
+      shell: asdf plugin add java
       when: asdf_list_java.rc != 0
     - name: Set java version
       shell: |
@@ -332,58 +334,58 @@
       when: asdf_installed.stat.exists
     - name: Set java default version
       shell: |
-        asdf global java {{ default_java_version }}
+        asdf set -u java {{ default_java_version }}
       when: asdf_installed.stat.exists
 
     ## kind
     - name: check if kind is installed
-      shell: asdf plugin-list | grep kind
+      shell: asdf plugin list | grep kind
       register: asdf_list_kind
       ignore_errors: true
     - name: Install kind
-      shell: asdf plugin-add kind
+      shell: asdf plugin add kind
       when: asdf_list_kind.rc != 0
     - name: Set kind version
       shell: |
         asdf install kind {{ kind_version }} \
-             && asdf global kind {{ kind_version }}
+             && asdf set -u kind {{ kind_version }}
       when: asdf_installed.stat.exists
     
     ## maven
     - name: check if maven is installed
-      shell: asdf plugin-list | grep maven
+      shell: asdf plugin list | grep maven
       register: asdf_list_maven
       ignore_errors: true
     - name: Install maven
-      shell: asdf plugin-add maven
+      shell: asdf plugin add maven
       when: asdf_list_maven.rc != 0
     - name: Set maven version
       shell: |
         asdf install maven {{ maven_version }} \
-             && asdf global maven {{ maven_version }}
+             && asdf set -u maven {{ maven_version }}
       when: asdf_installed.stat.exists
 
     ## mongosh
     - name: check if mongosh is installed
-      shell: asdf plugin-list | grep mongosh
+      shell: asdf plugin list | grep mongosh
       register: asdf_list_mongosh
       ignore_errors: true
     - name: Install mongosh
-      shell: asdf plugin-add mongosh
+      shell: asdf plugin add mongosh
       when: asdf_list_mongosh.rc != 0
     - name: Set mongosh version
       shell: |
         asdf install mongosh {{ mongosh_version }} \
-             && asdf global mongosh {{ mongosh_version }}
+             && asdf set -u mongosh {{ mongosh_version }}
       when: asdf_installed.stat.exists
 
     ## nodejs
     - name: check if nodejs is installed
-      shell: asdf plugin-list | grep nodejs
+      shell: asdf plugin list | grep nodejs
       register: asdf_list_nodejs
       ignore_errors: true
     - name: Install nodejs
-      shell: asdf plugin-add nodejs
+      shell: asdf plugin add nodejs
       when: asdf_list_nodejs.rc != 0
     - name: Set nodejs version
       shell: |
@@ -392,16 +394,16 @@
       when: asdf_installed.stat.exists
     - name: Set nodejs default version
       shell: |
-        asdf global nodejs {{ default_nodejs_version }}
+        asdf set -u nodejs {{ default_nodejs_version }}
       when: asdf_installed.stat.exists
 
     ## terraform
     - name: check if terraform is installed
-      shell: asdf plugin-list | grep terraform
+      shell: asdf plugin list | grep terraform
       register: asdf_list_terraform
       ignore_errors: true
     - name: Install terraform
-      shell: asdf plugin-add terraform
+      shell: asdf plugin add terraform
       when: asdf_list_terraform.rc != 0
     - name: Set terraform version
       shell: |
@@ -410,16 +412,16 @@
       when: asdf_installed.stat.exists
     - name: Set terraform default version
       shell: |
-        asdf global terraform {{ default_terraform_version }}
+        asdf set -u terraform {{ default_terraform_version }}
       when: asdf_installed.stat.exists
 
     ## terragrunt
     - name: check if terragrunt is installed
-      shell: asdf plugin-list | grep terragrunt
+      shell: asdf plugin list | grep terragrunt
       register: asdf_list_terragrunt
       ignore_errors: true
     - name: Install terragrunt
-      shell: asdf plugin-add terragrunt
+      shell: asdf plugin add terragrunt
       when: asdf_list_terragrunt.rc != 0
     - name: Set terragrunt version
       shell: |
@@ -428,72 +430,72 @@
       loop: "{{ terragrunt_version }}"
     - name: Set terragrunt default version
       shell: |
-        asdf global terragrunt {{ default_terragrunt_version }}
+        asdf set -u terragrunt {{ default_terragrunt_version }}
       when: asdf_installed.stat.exists
 
     ## yarn
     - name: check if yarn is installed
-      shell: asdf plugin-list | grep yarn
+      shell: asdf plugin list | grep yarn
       register: asdf_list_yarn
       ignore_errors: true
     - name: Install yarn
-      shell: asdf plugin-add yarn
+      shell: asdf plugin add yarn
       when: asdf_list_yarn.rc != 0
     - name: Set yarn version
       shell: |
         asdf install yarn {{ yarn_version }} \
-             && asdf global yarn {{ yarn_version }}
+             && asdf set -u yarn {{ yarn_version }}
       when: asdf_installed.stat.exists
     
     ## dive
     - name: check if dive is installed
-      shell: asdf plugin-list | grep dive
+      shell: asdf plugin list | grep dive
       register: asdf_list_dive
       ignore_errors: true
     - name: Install dive
-      shell: asdf plugin-add dive
+      shell: asdf plugin add dive
       when: asdf_list_dive.rc != 0
     - name: Set dive version
       shell: |
         asdf install dive {{ dive_version }} \
-             && asdf global dive {{ dive_version }}
+             && asdf set -u dive {{ dive_version }}
       when: asdf_installed.stat.exists
 
     ## kubeval
     - name: check if kubeval is installed
-      shell: asdf plugin-list | grep kubeval
+      shell: asdf plugin list | grep kubeval
       register: asdf_list_kubeval
       ignore_errors: true
     - name: Install kubeval
-      shell: asdf plugin-add kubeval
+      shell: asdf plugin add kubeval
       when: asdf_list_kubeval.rc != 0
     - name: Set kubeval version
       shell: |
         asdf install kubeval {{ kubeval_version }} \
-             && asdf global kubeval {{ kubeval_version }}
+             && asdf set -u kubeval {{ kubeval_version }}
       when: asdf_installed.stat.exists
 
      ## azure-cli
     - name: check if azure-cli is installed
-      shell: asdf plugin-list | grep azure-cli
+      shell: asdf plugin list | grep azure-cli
       register: asdf_list_azurecli
       ignore_errors: true
     - name: Install azure-cli
-      shell: asdf plugin-add azure-cli
+      shell: asdf plugin add azure-cli
       when: asdf_list_azurecli.rc != 0
     - name: Set azure-cli version
       shell: |
         asdf install azure-cli {{ azurecli_version }} \
-             && asdf global azure-cli {{ azurecli_version }}
+             && asdf set -u azure-cli {{ azurecli_version }}
       when: asdf_installed.stat.exists
         
      ## krew
     - name: check if krew is installed
-      shell: asdf plugin-list | grep krew
+      shell: asdf plugin list | grep krew
       register: asdf_list_krew
       ignore_errors: true
     - name: Install krew
-      shell: asdf plugin-add krew
+      shell: asdf plugin add krew
       when: asdf_list_krew.rc != 0
     - name: Set krew version
       shell: |
@@ -502,58 +504,58 @@
       when: asdf_installed.stat.exists
     - name: Set krew default version
       shell: |
-        asdf global krew {{ default_krew_version }}
+        asdf set -u krew {{ default_krew_version }}
       when: asdf_installed.stat.exists
         
     # ## k2tf
     #- name: check if k2tf is installed
-    #  shell: asdf plugin-list | grep k2tf
+    #  shell: asdf plugin list | grep k2tf
     #  register: asdf_list_k2tf
     #  ignore_errors: true
     #- name: Install k2tf
-    #  shell: asdf plugin-add k2tf
+    #  shell: asdf plugin add k2tf
     #  when: asdf_list_k2tf.rc != 0
     #- name: Set k2tf version
     #  shell: |
     #    asdf install k2tf {{ k2tf_version }} \
-    #         && asdf global k2tf {{ k2tf_version }}
+    #         && asdf set -u k2tf {{ k2tf_version }}
     #  when: asdf_installed.stat.exists
 
     ## cmctl
     - name: check if cmctl is installed
-      shell: asdf plugin-list | grep cmctl
+      shell: asdf plugin list | grep cmctl
       register: asdf_list_cmctl
       ignore_errors: true
     - name: Install cmctl
-      shell: asdf plugin-add cmctl
+      shell: asdf plugin add cmctl
       when: asdf_list_cmctl.rc != 0
     - name: Set cmctl version
       shell: |
         asdf install cmctl {{ cmctl_version }} \
-             && asdf global cmctl {{ cmctl_version }}
+             && asdf set -u cmctl {{ cmctl_version }}
       when: asdf_installed.stat.exists
 
     ## yq
     - name: check if yq is installed
-      shell: asdf plugin-list | grep yq
+      shell: asdf plugin list | grep yq
       register: asdf_list_yq
       ignore_errors: true
     - name: Install yq
-      shell: asdf plugin-add yq
+      shell: asdf plugin add yq
       when: asdf_list_yq.rc != 0
     - name: Set yq version
       shell: |
         asdf install yq {{ yq_version }} \
-             && asdf global yq {{ yq_version }}
+             && asdf set -u yq {{ yq_version }}
       when: asdf_installed.stat.exists
 
         ### minio
         #- name: check if minio is installed
-        #  shell: asdf plugin-list | grep minio
+        #  shell: asdf plugin list | grep minio
         #  register: asdf_list_minio
         #  ignore_errors: true
         #- name: Install minio
-        #  shell: asdf plugin-add minio
+        #  shell: asdf plugin add minio
         #  when: asdf_list_minio.rc != 0
         #- name: Set minio version
         #  shell: |
@@ -562,58 +564,58 @@
         #  loop: "{{ minio_version }}"
         #- name: Set minio default version
         #  shell: |
-        #    asdf global minio {{ default_minio_version }}
+        #    asdf set -u minio {{ default_minio_version }}
         #  when: asdf_installed.stat.exists
 
     ## kubeconform
     - name: check if kubeconform is installed
-      shell: asdf plugin-list | grep kubeconform
+      shell: asdf plugin list | grep kubeconform
       register: asdf_list_kubeconform
       ignore_errors: true
     - name: Install kubeconform
-      shell: asdf plugin-add kubeconform
+      shell: asdf plugin add kubeconform
       when: asdf_list_kubeconform.rc != 0
     - name: Set kubeconform version
       shell: |
         asdf install kubeconform {{ kubeconform_version }} \
-             && asdf global kubeconform {{ kubeconform_version }}
+             && asdf set -u kubeconform {{ kubeconform_version }}
       when: asdf_installed.stat.exists
 
     ## github-cli
     - name: check if github-cli is installed
-      shell: asdf plugin-list | grep github-cli
+      shell: asdf plugin list | grep github-cli
       register: asdf_list_github_cli
       ignore_errors: true
     - name: Install github-cli
-      shell: asdf plugin-add github-cli
+      shell: asdf plugin add github-cli
       when: asdf_list_github_cli.rc != 0
     - name: Set github-cli version
       shell: |
         asdf install github-cli {{ github_cli_version }} \
-             && asdf global github-cli {{ github_cli_version }}
+             && asdf set -u github-cli {{ github_cli_version }}
       when: asdf_installed.stat.exists
 
     ### act - github workflow locally
     #- name: check if act is installed
-    #  shell: asdf plugin-list | grep act
+    #  shell: asdf plugin list | grep act
     #  register: asdf_list_act
     #  ignore_errors: true
     #- name: Install act
-    #  shell: asdf plugin-add act
+    #  shell: asdf plugin add act
     #  when: asdf_list_act.rc != 0
     #- name: Set act version
     #  shell: |
     #    asdf install act {{ act_version }} \
-    #         && asdf global act {{ act_version }}
+    #         && asdf set -u act {{ act_version }}
     #  when: asdf_installed.stat.exists
 
     ### checkov
     #- name: check if checkov is installed
-    #  shell: asdf plugin-list | grep checkov
+    #  shell: asdf plugin list | grep checkov
     #  register: asdf_list_checkov
     #  ignore_errors: true
     #- name: Install checkov
-    #  shell: asdf plugin-add checkov
+    #  shell: asdf plugin add checkov
     #  when: asdf_list_checkov.rc != 0
     #- name: Set checkov version
     #  shell: |
@@ -622,16 +624,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set checkov default version
     #  shell: |
-    #    asdf global checkov {{ default_checkov_version }}
+    #    asdf set -u checkov {{ default_checkov_version }}
     #  when: asdf_installed.stat.exists
 
     ## rclone
     - name: check if rclone is installed
-      shell: asdf plugin-list | grep rclone
+      shell: asdf plugin list | grep rclone
       register: asdf_list_rclone
       ignore_errors: true
     - name: Install rclone
-      shell: asdf plugin-add rclone
+      shell: asdf plugin add rclone
       when: asdf_list_rclone.rc != 0
     - name: Set rclone version
       shell: |
@@ -640,114 +642,114 @@
       when: asdf_installed.stat.exists
     - name: Set rclone default version
       shell: |
-        asdf global rclone {{ default_rclone_version }}
+        asdf set -u rclone {{ default_rclone_version }}
       when: asdf_installed.stat.exists
 
     ## minikube
     - name: check if minikube is installed
-      shell: asdf plugin-list | grep minikube
+      shell: asdf plugin list | grep minikube
       register: asdf_list_minikube
       ignore_errors: true
     - name: Install minikube
-      shell: asdf plugin-add minikube
+      shell: asdf plugin add minikube
       when: asdf_list_minikube.rc != 0
     - name: Set minikube version
       shell: |
         asdf install minikube {{ minikube_version }} \
-             && asdf global minikube {{ minikube_version }}
+             && asdf set -u minikube {{ minikube_version }}
       when: asdf_installed.stat.exists
 
     ## kube-score
     - name: check if kube-score is installed
-      shell: asdf plugin-list | grep kube-score
+      shell: asdf plugin list | grep kube-score
       register: asdf_list_kubescore
       ignore_errors: true
     - name: Install kube-score
-      shell: asdf plugin-add kube-score
+      shell: asdf plugin add kube-score
       when: asdf_list_kubescore.rc != 0
     - name: Set kube-score version
       shell: |
         asdf install kube-score {{ kubescore_version }} \
-             && asdf global kube-score {{ kubescore_version }}
+             && asdf set -u kube-score {{ kubescore_version }}
       when: asdf_installed.stat.exists
 
     ### kubesec
     #- name: check if kubesec is installed
-    #  shell: asdf plugin-list | grep kubesec
+    #  shell: asdf plugin list | grep kubesec
     #  register: asdf_list_kubesec
     #  ignore_errors: true
     #- name: Install kubesec
-    #  shell: asdf plugin-add kubesec
+    #  shell: asdf plugin add kubesec
     #  when: asdf_list_kubesec.rc != 0
     #- name: Set kubesec version
     #  shell: |
     #    asdf install kubesec {{ kubesec_version }} \
-    #         && asdf global kubesec {{ kubesec_version }}
+    #         && asdf set -u kubesec {{ kubesec_version }}
     #  when: asdf_installed.stat.exists
 
     ## trivy
     - name: check if trivy is installed
-      shell: asdf plugin-list | grep trivy
+      shell: asdf plugin list | grep trivy
       register: asdf_list_trivy
       ignore_errors: true
     - name: Install trivy
-      shell: asdf plugin-add trivy
+      shell: asdf plugin add trivy
       when: asdf_list_trivy.rc != 0
     - name: Set trivy version
       shell: |
         asdf install trivy {{ trivy_version }} \
-             && asdf global trivy {{ trivy_version }}
+             && asdf set -u trivy {{ trivy_version }}
       when: asdf_installed.stat.exists
 
     ### lokilogcli
     #- name: check if loki-logcli is installed
-    #  shell: asdf plugin-list | grep loki-logcli
+    #  shell: asdf plugin list | grep loki-logcli
     #  register: asdf_list_lokilogcli
     #  ignore_errors: true
     #- name: Install loki-logcli
-    #  shell: asdf plugin-add loki-logcli
+    #  shell: asdf plugin add loki-logcli
     #  when: asdf_list_lokilogcli.rc != 0
     #- name: Set loki-logcli version
     #  shell: |
     #    asdf install loki-logcli {{ lokilogcli_version }} \
-    #         && asdf global loki-logcli {{ lokilogcli_version }}
+    #         && asdf set -u loki-logcli {{ lokilogcli_version }}
     #  when: asdf_installed.stat.exists
 
     ### infracost
     #- name: check if infracost is installed
-    #  shell: asdf plugin-list | grep infracost
+    #  shell: asdf plugin list | grep infracost
     #  register: asdf_list_infracost
     #  ignore_errors: true
     #- name: Install infracost
-    #  shell: asdf plugin-add infracost
+    #  shell: asdf plugin add infracost
     #  when: asdf_list_infracost.rc != 0
     #- name: Set infracost version
     #  shell: |
     #    asdf install infracost {{ infracost_version }} \
-    #         && asdf global infracost {{ infracost_version }}
+    #         && asdf set -u infracost {{ infracost_version }}
     #  when: asdf_installed.stat.exists
 
     ### drone
     #- name: check if drone is installed
-    #  shell: asdf plugin-list | grep drone
+    #  shell: asdf plugin list | grep drone
     #  register: asdf_list_drone
     #  ignore_errors: true
     #- name: Install drone
-    #  shell: asdf plugin-add drone
+    #  shell: asdf plugin add drone
     #  when: asdf_list_drone.rc != 0
     #- name: Set drone version
     #  shell: |
     #    asdf install drone {{ drone_version }} \
-    #         && asdf global drone {{ drone_version }}
+    #         && asdf set -u drone {{ drone_version }}
     #  when: asdf_installed.stat.exists
 
     ### doctl
     #- name: check if doctl is installed
-    #  shell: asdf plugin-list | grep doctl
+    #  shell: asdf plugin list | grep doctl
     #  register: asdf_list_doctl
     #  ignore_errors: true
     #- name: Install doctl
-    #  shell: asdf plugin-add doctl
+    #  shell: asdf plugin add doctl
     #  when: asdf_list_doctl.rc != 0
     #- name: Set doctl version
     #  shell: |
@@ -756,16 +758,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set doctl default version
     #  shell: |
-    #    asdf global doctl {{ default_doctl_version }}
+    #    asdf set -u doctl {{ default_doctl_version }}
     #  when: asdf_installed.stat.exists
 
     ### tilt
     #- name: check if tilt is installed
-    #  shell: asdf plugin-list | grep tilt
+    #  shell: asdf plugin list | grep tilt
     #  register: asdf_list_tilt
     #  ignore_errors: true
     #- name: Install tilt
-    #  shell: asdf plugin-add tilt
+    #  shell: asdf plugin add tilt
     #  when: asdf_list_tilt.rc != 0
     #- name: Set tilt version
     #  shell: |
@@ -774,16 +776,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set tilt default version
     #  shell: |
-    #    asdf global tilt {{ default_tilt_version }}
+    #    asdf set -u tilt {{ default_tilt_version }}
     #  when: asdf_installed.stat.exists
 
     ### dagger
     #- name: check if dagger is installed
-    #  shell: asdf plugin-list | grep dagger
+    #  shell: asdf plugin list | grep dagger
     #  register: asdf_list_dagger
     #  ignore_errors: true
     #- name: Install dagger
-    #  shell: asdf plugin-add dagger
+    #  shell: asdf plugin add dagger
     #  when: asdf_list_dagger.rc != 0
     #- name: Set dagger version
     #  shell: |
@@ -792,16 +794,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set dagger default version
     #  shell: |
-    #    asdf global dagger {{ default_dagger_version }}
+    #    asdf set -u dagger {{ default_dagger_version }}
     #  when: asdf_installed.stat.exists
 
     ### kubent
     #- name: check if kubent is installed
-    #  shell: asdf plugin-list | grep kubent
+    #  shell: asdf plugin list | grep kubent
     #  register: asdf_list_kubent
     #  ignore_errors: true
     #- name: Install kubent
-    #  shell: asdf plugin-add kubent
+    #  shell: asdf plugin add kubent
     #  when: asdf_list_kubent.rc != 0
     #- name: Set kubent version
     #  shell: |
@@ -810,16 +812,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set kubent default version
     #  shell: |
-    #    asdf global kubent {{ default_kubent_version }}
+    #    asdf set -u kubent {{ default_kubent_version }}
     #  when: asdf_installed.stat.exists
 
     ### ctlptl
     #- name: check if ctlptl is installed
-    #  shell: asdf plugin-list | grep ctlptl
+    #  shell: asdf plugin list | grep ctlptl
     #  register: asdf_list_ctlptl
     #  ignore_errors: true
     #- name: Install ctlptl
-    #  shell: asdf plugin-add ctlptl
+    #  shell: asdf plugin add ctlptl
     #  when: asdf_list_ctlptl.rc != 0
     #- name: Set ctlptl version
     #  shell: |
@@ -828,16 +830,16 @@
     #  when: asdf_installed.stat.exists
     #- name: Set ctlptl default version
     #  shell: |
-    #    asdf global ctlptl {{ default_ctlptl_version }}
+    #    asdf set -u ctlptl {{ default_ctlptl_version }}
     #  when: asdf_installed.stat.exists
 
     ## oci
     - name: check if oci is installed
-      shell: asdf plugin-list | grep oci
+      shell: asdf plugin list | grep oci
       register: asdf_list_oci
       ignore_errors: true
     - name: Install oci
-      shell: asdf plugin-add oci
+      shell: asdf plugin add oci
       when: asdf_list_oci.rc != 0
     - name: Set oci version
       shell: |
@@ -846,16 +848,16 @@
       when: asdf_installed.stat.exists
     - name: Set oci default version
       shell: |
-        asdf global oci {{ default_oci_version }}
+        asdf set -u oci {{ default_oci_version }}
       when: asdf_installed.stat.exists
 
     ## hcloud
     - name: check if hcloud is installed
-      shell: asdf plugin-list | grep hcloud
+      shell: asdf plugin list | grep hcloud
       register: asdf_list_hcloud
       ignore_errors: true
     - name: install hcloud
-      shell: asdf plugin-add hcloud
+      shell: asdf plugin add hcloud
       when: asdf_list_hcloud.rc != 0
     - name: set hcloud version
       shell: |
@@ -864,16 +866,16 @@
       when: asdf_installed.stat.exists
     - name: set hcloud default version
       shell: |
-        asdf global hcloud {{ default_hcloud_version }}
+        asdf set -u hcloud {{ default_hcloud_version }}
       when: asdf_installed.stat.exists
 
     ### just
     #- name: check if just is installed
-    #  shell: asdf plugin-list | grep just
+    #  shell: asdf plugin list | grep just
     #  register: asdf_list_just
     #  ignore_errors: true
     #- name: install just
-    #  shell: asdf plugin-add just
+    #  shell: asdf plugin add just
     #  when: asdf_list_just.rc != 0
     #- name: set just version
     #  shell: |
@@ -882,16 +884,16 @@
     #  when: asdf_installed.stat.exists
     #- name: set just default version
     #  shell: |
-    #    asdf global just {{ default_just_version }}
+    #    asdf set -u just {{ default_just_version }}
     #  when: asdf_installed.stat.exists
 
     ## sops
     - name: check if sops is installed
-      shell: asdf plugin-list | grep sops
+      shell: asdf plugin list | grep sops
       register: asdf_list_sops
       ignore_errors: true
     - name: install sops
-      shell: asdf plugin-add sops
+      shell: asdf plugin add sops
       when: asdf_list_sops.rc != 0
     - name: set sops version
       shell: |
@@ -900,16 +902,16 @@
       when: asdf_installed.stat.exists
     - name: set sops default version
       shell: |
-        asdf global sops {{ default_sops_version }}
+        asdf set -u sops {{ default_sops_version }}
       when: asdf_installed.stat.exists
 
     ## lazygit
     - name: check if lazygit is installed
-      shell: asdf plugin-list | grep lazygit
+      shell: asdf plugin list | grep lazygit
       register: asdf_list_lazygit
       ignore_errors: true
     - name: install lazygit
-      shell: asdf plugin-add lazygit
+      shell: asdf plugin add lazygit
       when: asdf_list_lazygit.rc != 0
     - name: set lazygit version
       shell: |
@@ -918,5 +920,5 @@
       when: asdf_installed.stat.exists
     - name: set lazygit default version
       shell: |
-        asdf global lazygit {{ default_lazygit_version }}
+        asdf set -u lazygit {{ default_lazygit_version }}
       when: asdf_installed.stat.exists

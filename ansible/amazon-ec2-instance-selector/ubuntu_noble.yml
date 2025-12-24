@@ -1,0 +1,32 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_prompt:
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: yes
+
+  tasks:
+    - name: Checks for amazon-ec2-instance-selector
+      stat:
+        path: /usr/local/bin/ec2-instance-selector
+      register: ec2_instance_selector_installed
+      ignore_errors: true
+
+    - name: Download amazon-ec2-instance-selector
+      ansible.builtin.shell: curl -Lo ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/v2.0.3/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64 && chmod +x ec2-instance-selector
+      when: ec2_instance_selector_installed.stat.exists == False
+      
+    - name: Install amazon-ec2-instance-selector
+      ansible.builtin.copy:
+        src: ./ec2-instance-selector
+        dest: /usr/local/bin/
+        mode: '0755'
+      when: ec2_instance_selector_installed.stat.exists == False
+
+    - name: Remove file (delete file)
+      ansible.builtin.file:
+        path: ./ec2-instance-selector
+        state: absent
+      when: ec2_instance_selector_installed.stat.exists == False
+

@@ -14,13 +14,13 @@
     - name: Install snap packages
       community.general.snap:
         name: 
-          - slack
+          #- slack
           - gimp
-          - code
-          - dbeaver-ce
-          - spotify
-          - opera
-          - vlc
-          - postman
+          #- code
+          #- dbeaver-ce
+          #- spotify
+          #- opera
+          #- vlc
+          #- postman
           - zoom-client
         classic: yes

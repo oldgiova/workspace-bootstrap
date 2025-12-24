@@ -1,0 +1,44 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+
+- name: Install apt packages
+  import_playbook: general/apt-packages_ubuntu_noble.yml
+
+- name: Install snap packages
+  import_playbook: general/snap-packages.yml
+
+- name: Oh My ZSH Setup
+  import_playbook: oh-my-zsh/ubuntu_noble.yml
+
+- name: manual install
+  import_playbook: general/manual_install_ubuntu_noble.yml
+
+#- name: ASDF Setup
+#  import_playbook: asdf/ubuntu_noble.yml
+
+- name: ASDF
+  import_playbook: asdf/asdf_packages_ubuntu_noble.yml
+
+#- name: Docker Setup
+#  import_playbook: docker/ubuntu_noble.yml
+
+#- name: Powershell Setup
+#  import_playbook: powershell/ubuntu_noble.yml
+
+#- name: VIM Setup
+#  import_playbook: vim/ubuntu_noble.yml
+
+- name: Krew Plugin install
+  import_playbook: krew/ubuntu_noble.yml
+
+- name: Atlas cli install
+  import_playbook: atlas-cli/ubuntu_noble.yml
+
+- name: amazon-ec2-instance-selector install
+  import_playbook: amazon-ec2-instance-selector/ubuntu_noble.yml
+
+    #- name: AWS VPN Client Setup
+    #  import_playbook: aws-vpn-client/ubuntu_noble.yml
+- name: Quickemu setup
+  import_playbook: quickemu/ubuntu_noble.yml

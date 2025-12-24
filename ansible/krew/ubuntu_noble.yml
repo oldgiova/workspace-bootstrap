@@ -1,0 +1,25 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    krew_plugins:
+      - "cert-manager"
+      - "popeye"
+      - "explore"
+      - "sniff"
+
+  tasks:
+    - name: Check if kubectl is installed
+      command: which kubectl
+      register: kubectl_check
+      failed_when: kubectl_check.rc > 1
+      changed_when: kubectl_check.rc == 1
+
+    - name: Krew update
+      command: kubectl krew update
+      when: kubectl_check.rc == 0
+
+    - name: Krew Plugin Install
+      command: kubectl krew install {{ item  }} 
+      when: kubectl_check.rc == 0
+      loop: "{{ krew_plugins }}"
+ 
