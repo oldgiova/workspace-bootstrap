@@ -30,8 +30,8 @@
 
       - name: flux
         plugin: flux2
-        versions: ["2.1.1"]
-        default: "2.1.1"
+        versions: ["2.1.1","2.7.5"]
+        default: "2.7.5"
 
       # Cloud CLI tools
       - name: awscli
