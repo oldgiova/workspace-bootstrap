@@ -79,13 +79,13 @@
       # Infrastructure as Code
       - name: terraform
         plugin: terraform
-        versions: ["1.1.2", "1.1.7", "0.15.5", "1.2.1", "1.3.6", "1.3.9", "1.5.7", "1.6.4", "1.11.4"]
-        default: "1.11.4"
+        versions: ["1.1.2", "1.1.7", "0.15.5", "1.2.1", "1.3.6", "1.3.9", "1.5.7", "1.6.4", "1.11.4", "1.9.8"]
+        default: "1.9.8"
 
       - name: terragrunt
         plugin: terragrunt
-        versions: ["0.36.3", "0.29.7", "0.77.17"]
-        default: "0.77.17"
+        versions: ["0.36.3", "0.29.7", "0.77.17", "0.92.1"]
+        default: "0.92.1"
 
       # Container and orchestration tools
       - name: kind
