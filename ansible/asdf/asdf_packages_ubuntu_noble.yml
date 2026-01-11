@@ -177,6 +177,11 @@
         versions: ["0.57.0"]
         default: "0.57.0"
 
+      - name: checkov
+        plugin: checkov
+        versions: ["3.2.497"]
+        default: "3.2.497"
+
   tasks:
     - name: check if asdf is installed
       stat:
