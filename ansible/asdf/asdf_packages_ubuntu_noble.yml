@@ -182,6 +182,11 @@
         versions: ["3.2.497"]
         default: "3.2.497"
 
+      - name: loki-logcli
+        plugin: loki-logcli
+        version: ["3.6.5"]
+        default: "3.6.5"
+
   tasks:
     - name: check if asdf is installed
       stat:
