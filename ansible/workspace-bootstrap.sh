@@ -9,7 +9,7 @@ RELEASE=${NAME,,}_${VERSION_CODENAME,,}
 RELEASE="${RELEASE// /_}"
 RELEASE="${RELEASE//\//_}"
 
-if [[ $(basename ${PWD}) == "workspace-bootstrap"  ]]; then
+if [[ -d ansible ]]; then
   cd ansible
 fi
 

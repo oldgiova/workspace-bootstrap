@@ -1,0 +1,40 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: false
+
+  tasks:
+    - name: Check if gemini-cli is installed
+      shell: npm list -g @google/gemini-cli
+      register: gemini_cli_check
+      failed_when: false
+      changed_when: gemini_cli_check.rc != 0
+
+    - name: Clean up failed gemini-cli installation if exists
+      shell: npm uninstall -g @google/gemini-cli
+      when: gemini_cli_check.rc != 0
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.asdf/shims:{{ ansible_env.PATH }}"
+      failed_when: false
+      ignore_errors: true
+
+    - name: Install gemini-cli globally via npm
+      shell: npm install -g @google/gemini-cli
+      when: gemini_cli_check.rc != 0
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.asdf/shims:{{ ansible_env.PATH }}"
+      retries: 3
+      delay: 5
+      register: npm_install_result
+      until: npm_install_result.rc == 0
+
+    - name: Verify gemini-cli installation
+      shell: gemini --version
+      register: gemini_version
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.asdf/shims:{{ ansible_env.PATH }}"
+      when: gemini_cli_check.rc != 0
+
+    - name: Display gemini-cli version
+      debug:
+        msg: "Gemini CLI version: {{ gemini_version.stdout }}"
+      when: gemini_cli_check.rc != 0

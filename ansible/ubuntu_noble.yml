@@ -38,6 +38,9 @@
 - name: amazon-ec2-instance-selector install
   import_playbook: amazon-ec2-instance-selector/ubuntu_noble.yml
 
+- name: Gemini CLI install
+  import_playbook: gemini-cli/ubuntu_noble.yml
+
     #- name: AWS VPN Client Setup
     #  import_playbook: aws-vpn-client/ubuntu_noble.yml
 - name: Quickemu setup
