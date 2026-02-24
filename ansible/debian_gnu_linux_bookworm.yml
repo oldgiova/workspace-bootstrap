@@ -10,6 +10,15 @@
 - name: Oh My ZSH Setup
   import_playbook: oh-my-zsh/debian_gnu_linux_bookworm.yml
 
-
 - name: Krew Plugin install
   import_playbook: krew/debian_gnu_linux_bookworm.yml
+
+- name: ASDF
+  import_playbook: asdf/debian_gnu_linux_bookworm.yml
+
+- name: Atlas cli install
+  import_playbook: atlas-cli/debian_bookworm.yml
+
+- name: Gemini CLI install
+  import_playbook: gemini-cli/debian_bookworm.yml
+
