@@ -184,34 +184,37 @@
 
       - name: loki-logcli
         plugin: loki-logcli
-        version: ["3.6.5"]
+        versions: ["3.6.5"]
         default: "3.6.5"
+
+  environment:
+    ASDF_DATA_DIR: "{{ ansible_env.HOME }}/.asdf"
 
   tasks:
     - name: check if asdf is installed
-      stat:
-        path: ~/.asdf
+      command: asdf --version
       register: asdf_installed
       ignore_errors: true
+      changed_when: false
 
     - name: check installed asdf plugins
       shell: asdf plugin list
       register: asdf_plugins_installed
       ignore_errors: true
-      when: asdf_installed.stat.exists
+      when: asdf_installed.rc == 0
 
     - name: add asdf plugin for {{ item.name }}
       shell: asdf plugin add {{ item.plugin }}
       loop: "{{ asdf_tools }}"
       when:
-        - asdf_installed.stat.exists
-        - item.plugin not in asdf_plugins_installed.stdout
+        - asdf_installed.rc == 0
+        - item.plugin not in (asdf_plugins_installed.stdout | default(''))
       ignore_errors: true
 
     - name: install {{ item.0.name }} version {{ item.1 }}
       shell: asdf install {{ item.0.plugin }} {{ item.1 }}
       loop: "{{ asdf_tools | subelements('versions') }}"
-      when: asdf_installed.stat.exists
+      when: asdf_installed.rc == 0
       register: asdf_install_result
       failed_when:
         - asdf_install_result.rc != 0
@@ -221,16 +224,16 @@
     - name: set default version for {{ item.name }} to {{ item.default }}
       shell: asdf set -u {{ item.plugin }} {{ item.default }}
       loop: "{{ asdf_tools }}"
-      when: asdf_installed.stat.exists
+      when: asdf_installed.rc == 0
       ignore_errors: true
 
     - name: reshim asdf
       shell: asdf reshim
-      when: asdf_installed.stat.exists
+      when: asdf_installed.rc == 0
       ignore_errors: true
 
     - name: verify asdf plugin list
       shell: asdf plugin list
       register: asdf_plugins_final
-      when: asdf_installed.stat.exists
+      when: asdf_installed.rc == 0
       ignore_errors: true
